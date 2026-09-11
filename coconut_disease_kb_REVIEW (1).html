@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disease KB — Expert Review Mode</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --earth:#2C1A0E;--bark:#5C3A1E;--soil:#8B5E3C;--clay:#C4956A;
+  --straw:#E8C99A;--cream:#FAF5ED;--leaf:#2D6A2D;--leaf-light:#4A9E4A;
+  --leaf-pale:#D4EDDA;--alert:#B5451B;--alert-pale:#FDEADF;
+  --sky:#1D4E7A;--sky-pale:#D9EBF8;--gold:#C49A2A;--gold-pale:#FDF3D4;
+  --approved:#166534;--approved-bg:#DCFCE7;
+  --changes:#7C2D12;--changes-bg:#FEF3C7;
+  --rejected:#991B1B;--rejected-bg:#FEE2E2;
+  --pending-bg:#F3F4F6;--pending:#374151;
+  --edit-highlight:rgba(59,130,246,0.08);
+  --edit-border:#3B82F6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#F1EFE8;color:var(--earth);line-height:1.7;min-height:100vh}
+
+/* ── TOP BAR ── */
+.top-bar{
+  background:var(--earth);padding:0;position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 16px rgba(0,0,0,0.35)
+}
+.top-bar-inner{
+  max-width:1280px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:16px;height:60px;flex-wrap:wrap
+}
+.top-bar-logo{
+  font-family:'Playfair Display',serif;font-size:1rem;color:var(--straw);
+  display:flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap
+}
+.review-badge{
+  background:#7F1D1D;color:#FCA5A5;font-size:0.7rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:12px;
+  border:1px solid #B91C1C;white-space:nowrap
+}
+.reviewer-section{
+  display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap
+}
+.reviewer-label{font-size:0.78rem;color:var(--straw);opacity:0.7;white-space:nowrap}
+#reviewerName{
+  border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);
+  color:var(--straw);border-radius:8px;padding:6px 12px;font-size:0.82rem;
+  font-family:'DM Sans',sans-serif;width:180px;outline:none
+}
+#reviewerName:focus{border-color:var(--clay)}
+.top-btn{
+  border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);
+  color:var(--straw);border-radius:8px;padding:7px 14px;font-size:0.78rem;
+  font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all 0.15s;white-space:nowrap
+}
+.top-btn:hover{background:rgba(255,255,255,0.18)}
+.top-btn.export{background:var(--leaf);border-color:var(--leaf-light);color:#fff}
+.top-btn.export:hover{background:var(--leaf-light)}
+.top-btn.save-btn{background:var(--gold);border-color:var(--gold);color:#3a1a00}
+.top-btn.save-btn:hover{background:#e6b430}
+
+/* ── PROGRESS BAR ── */
+.progress-strip{
+  background:var(--bark);padding:10px 24px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap
+}
+.progress-strip-inner{max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.prog-stat{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--straw);white-space:nowrap}
+.prog-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-approved{background:#4ADE80}
+.dot-changes{background:#FCD34D}
+.dot-rejected{background:#F87171}
+.dot-pending{background:#9CA3AF}
+.prog-bar-wrap{flex:1;min-width:120px;height:6px;background:rgba(255,255,255,0.15);border-radius:3px;overflow:hidden}
+.prog-bar-fill{height:100%;background:var(--leaf-light);border-radius:3px;transition:width 0.4s ease}
+.prog-text{font-size:0.75rem;color:var(--clay);white-space:nowrap}
+
+/* ── LAYOUT ── */
+.layout{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:0;min-height:calc(100vh - 120px)}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:#fff;border-right:1px solid rgba(92,58,30,0.15);
+  position:sticky;top:100px;height:calc(100vh - 100px);overflow-y:auto;padding:20px 0
+}
+.sidebar-section-title{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--soil);padding:0 20px;margin-bottom:8px;margin-top:16px
+}
+.sidebar-section-title:first-child{margin-top:0}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;
+  border-left:3px solid transparent;transition:all 0.15s;text-decoration:none
+}
+.sidebar-item:hover{background:#FAF5ED;border-left-color:var(--clay)}
+.sidebar-item.active{background:#FAF5ED;border-left-color:var(--leaf)}
+.sidebar-crop-icon{font-size:16px;flex-shrink:0}
+.sidebar-name{font-size:0.85rem;font-weight:500;color:var(--earth);line-height:1.3}
+.sidebar-status{font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:6px;margin-left:auto;white-space:nowrap}
+.s-approved{background:var(--approved-bg);color:var(--approved)}
+.s-changes{background:var(--changes-bg);color:var(--changes)}
+.s-rejected{background:var(--rejected-bg);color:var(--rejected)}
+.s-pending{background:var(--pending-bg);color:var(--pending)}
+
+/* ── MAIN REVIEW AREA ── */
+.review-area{padding:28px 32px;overflow-y:auto}
+
+/* Disease Section */
+.disease-section{
+  background:#fff;border-radius:16px;border:1px solid rgba(92,58,30,0.1);
+  margin-bottom:32px;overflow:hidden;scroll-margin-top:120px
+}
+.disease-section-header{
+  background:linear-gradient(135deg,var(--earth),var(--bark));
+  padding:24px 28px;position:relative
+}
+.disease-section-header .crop-tag{
+  display:inline-flex;align-items:center;gap:6px;font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;
+  border-radius:10px;margin-bottom:10px
+}
+.tag-coconut{background:rgba(45,106,45,0.3);color:#86EFAC}
+.tag-banana{background:rgba(196,154,42,0.3);color:#FCD34D}
+.disease-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:#FAF5ED;margin-bottom:6px}
+.disease-pathogen{font-size:0.82rem;color:var(--clay);font-style:italic}
+
+/* Status Control Row */
+.status-control-row{
+  display:flex;align-items:center;gap:12px;padding:16px 28px;
+  background:#FAFAF8;border-bottom:1px solid rgba(92,58,30,0.08);flex-wrap:wrap
+}
+.status-label{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--soil)}
+.status-btns{display:flex;gap:6px}
+.status-btn{
+  border:1.5px solid currentColor;background:transparent;
+  border-radius:8px;padding:5px 14px;font-size:0.78rem;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s
+}
+.status-btn.approved{color:var(--approved)}
+.status-btn.approved:hover,.status-btn.approved.active{background:var(--approved-bg)}
+.status-btn.changes{color:#92400E}
+.status-btn.changes:hover,.status-btn.changes.active{background:var(--changes-bg)}
+.status-btn.rejected{color:var(--rejected)}
+.status-btn.rejected:hover,.status-btn.rejected.active{background:var(--rejected-bg)}
+.comment-quick{
+  margin-left:auto;border:1.5px solid rgba(92,58,30,0.2);background:transparent;
+  border-radius:8px;padding:5px 14px;font-size:0.78rem;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--sky);
+  transition:all 0.15s
+}
+.comment-quick:hover{background:var(--sky-pale)}
+
+/* Fields */
+.fields-body{padding:24px 28px}
+.field-group{margin-bottom:24px}
+.field-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:8px
+}
+.field-label{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--soil);display:flex;align-items:center;gap:8px
+}
+.field-changed-badge{
+  background:#EFF6FF;color:#1E40AF;font-size:0.65rem;font-weight:700;
+  padding:2px 7px;border-radius:6px;letter-spacing:0.06em;text-transform:uppercase;
+  display:none
+}
+.edit-hint{font-size:0.72rem;color:#94A3B8;font-style:italic}
+
+/* Editable Text */
+.editable-text{
+  background:transparent;border:1.5px dashed rgba(92,58,30,0.2);border-radius:8px;
+  padding:10px 14px;font-size:0.9rem;color:var(--earth);line-height:1.7;
+  font-family:'DM Sans',sans-serif;width:100%;outline:none;resize:vertical;
+  min-height:60px;transition:all 0.15s
+}
+.editable-text:focus{
+  border-color:var(--edit-border);background:var(--edit-highlight);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.1)
+}
+.editable-text:hover:not(:focus){border-color:var(--clay)}
+
+/* Editable List */
+.editable-list{border:1.5px dashed rgba(92,58,30,0.2);border-radius:10px;overflow:hidden;transition:border-color 0.15s}
+.editable-list:hover{border-color:var(--clay)}
+.editable-list.focused{border-color:var(--edit-border)}
+.list-item-row{
+  display:flex;align-items:flex-start;gap:8px;padding:8px 12px;
+  border-bottom:1px solid rgba(92,58,30,0.06);background:#fff
+}
+.list-item-row:last-child{border-bottom:none}
+.list-item-bullet{color:var(--leaf);font-size:0.75rem;margin-top:6px;flex-shrink:0}
+.list-item-input{
+  flex:1;border:none;outline:none;font-size:0.88rem;color:var(--earth);
+  line-height:1.6;font-family:'DM Sans',sans-serif;background:transparent;
+  padding:2px 0;resize:none;min-height:28px
+}
+.list-item-input:focus{background:rgba(59,130,246,0.04)}
+.list-item-del{
+  width:24px;height:24px;border-radius:6px;border:none;background:transparent;
+  color:#CBD5E1;cursor:pointer;font-size:16px;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s
+}
+.list-item-del:hover{background:#FEE2E2;color:var(--rejected)}
+.add-item-row{
+  padding:8px 12px;display:flex;align-items:center;gap:6px;
+  background:#FAFAF8;cursor:pointer;border-top:1px solid rgba(92,58,30,0.06)
+}
+.add-item-btn{
+  border:none;background:none;color:var(--leaf-light);font-size:0.8rem;
+  font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:4px;padding:0
+}
+.add-item-btn:hover{color:var(--leaf)}
+
+/* FAQ editable */
+.faq-edit-item{
+  border:1.5px dashed rgba(92,58,30,0.2);border-radius:10px;margin-bottom:10px;
+  overflow:hidden;transition:border-color 0.15s
+}
+.faq-edit-item:hover{border-color:var(--clay)}
+.faq-edit-item.focused{border-color:var(--edit-border)}
+.faq-field{padding:8px 12px;border-bottom:1px solid rgba(92,58,30,0.06)}
+.faq-field:last-child{border-bottom:none}
+.faq-field-label{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--soil);margin-bottom:4px}
+.faq-input{
+  border:none;outline:none;font-size:0.88rem;color:var(--earth);
+  line-height:1.6;font-family:'DM Sans',sans-serif;background:transparent;
+  width:100%;resize:none;padding:0
+}
+.faq-input:focus{background:rgba(59,130,246,0.04)}
+.faq-del-row{
+  display:flex;justify-content:flex-end;padding:6px 12px;background:#FAFAF8;
+  border-top:1px solid rgba(92,58,30,0.06)
+}
+.faq-del-btn{
+  border:1px solid #FCA5A5;background:transparent;color:var(--rejected);
+  border-radius:6px;padding:3px 10px;font-size:0.72rem;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif
+}
+
+/* Comments Panel */
+.comments-panel{
+  background:#FAFAF8;border-top:1px solid rgba(92,58,30,0.1);padding:20px 28px
+}
+.comments-title{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--soil);margin-bottom:12px;display:flex;align-items:center;gap:8px
+}
+.comment-count{
+  background:var(--sky-pale);color:var(--sky);font-size:0.68rem;font-weight:700;
+  padding:2px 7px;border-radius:10px
+}
+.comment-item{
+  background:#fff;border:1px solid rgba(92,58,30,0.1);border-radius:10px;
+  padding:12px 14px;margin-bottom:8px;position:relative
+}
+.comment-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.comment-author{font-size:0.75rem;font-weight:600;color:var(--bark)}
+.comment-time{font-size:0.7rem;color:#94A3B8}
+.comment-field-tag{
+  background:var(--gold-pale);color:var(--gold);font-size:0.65rem;font-weight:700;
+  padding:2px 7px;border-radius:6px;margin-left:auto
+}
+.comment-text{font-size:0.85rem;color:#444;line-height:1.6}
+.comment-del{
+  position:absolute;top:8px;right:8px;border:none;background:transparent;
+  color:#CBD5E1;cursor:pointer;font-size:14px;border-radius:4px;
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center
+}
+.comment-del:hover{background:#FEE2E2;color:var(--rejected)}
+.comment-add-area{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.comment-add-area select,.comment-add-area input{
+  border:1.5px solid rgba(92,58,30,0.2);border-radius:8px;padding:7px 12px;
+  font-size:0.82rem;font-family:'DM Sans',sans-serif;background:#fff;
+  color:var(--earth);outline:none
+}
+.comment-add-area input{flex:1;min-width:200px}
+.comment-add-area input:focus,.comment-add-area select:focus{border-color:var(--sky)}
+.comment-submit{
+  background:var(--sky);color:#fff;border:none;border-radius:8px;
+  padding:7px 16px;font-size:0.82rem;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',sans-serif;white-space:nowrap
+}
+.comment-submit:hover{background:#1a5fa0}
+
+/* Highlight row when comment is added */
+.field-group.commented{background:rgba(219,234,254,0.15);border-radius:8px;padding:8px;margin:-8px}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;background:var(--earth);color:var(--straw);
+  padding:12px 20px;border-radius:10px;font-size:0.85rem;font-weight:500;
+  z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  animation:toastIn 0.3s ease;pointer-events:none
+}
+.toast.success{background:var(--leaf)}
+.toast.error{background:var(--alert)}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Export Modal */
+.export-overlay{
+  display:none;position:fixed;inset:0;background:rgba(44,26,14,0.6);
+  z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)
+}
+.export-overlay.open{display:flex}
+.export-modal{
+  background:#fff;border-radius:16px;width:520px;max-width:95vw;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);overflow:hidden
+}
+.export-modal-header{background:var(--earth);padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+.export-modal-header h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--straw)}
+.export-close{border:none;background:rgba(255,255,255,0.1);color:var(--straw);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:16px}
+.export-body{padding:24px}
+.export-option{
+  border:1.5px solid rgba(92,58,30,0.15);border-radius:10px;padding:14px 18px;
+  margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;
+  transition:all 0.15s
+}
+.export-option:hover{border-color:var(--leaf);background:var(--leaf-pale)}
+.export-opt-icon{font-size:24px}
+.export-opt-title{font-size:0.92rem;font-weight:600;color:var(--earth)}
+.export-opt-desc{font-size:0.78rem;color:var(--soil);margin-top:2px}
+
+/* Review Summary Card */
+.summary-card{
+  background:#fff;border-radius:12px;border:1px solid rgba(92,58,30,0.1);
+  padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap
+}
+.summary-stat{text-align:center;flex:1;min-width:80px}
+.summary-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700}
+.summary-lbl{font-size:0.72rem;color:var(--soil);text-transform:uppercase;letter-spacing:0.08em}
+.num-approved{color:var(--approved)}
+.num-changes{color:#92400E}
+.num-rejected{color:var(--rejected)}
+.num-pending{color:#6B7280}
+
+/* Section divider */
+.section-header-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:8px
+}
+.section-header-row h3{
+  font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--earth)
+}
+.section-divider{flex:1;height:1px;background:rgba(92,58,30,0.12)}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.review-area{padding:16px}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <a href="#" class="top-bar-logo">🌿 AgriPath KB</a>
+    <span class="review-badge">🔴 REVIEW MODE</span>
+    <div class="reviewer-section">
+      <span class="reviewer-label">Reviewer:</span>
+      <input type="text" id="reviewerName" placeholder="Your name…" value="">
+      <button class="top-btn save-btn" onclick="saveProgress()">💾 Save Draft</button>
+      <button class="top-btn export" onclick="openExport()">⬇ Export Review</button>
+    </div>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-strip">
+  <div class="progress-strip-inner">
+    <div class="prog-stat"><span class="prog-dot dot-approved"></span><span id="prog-approved">0 Approved</span></div>
+    <div class="prog-stat"><span class="prog-dot dot-changes"></span><span id="prog-changes">0 Needs Changes</span></div>
+    <div class="prog-stat"><span class="prog-dot dot-rejected"></span><span id="prog-rejected">0 Rejected</span></div>
+    <div class="prog-stat"><span class="prog-dot dot-pending"></span><span id="prog-pending">2 Pending</span></div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progBar" style="width:0%"></div></div>
+    <span class="prog-text" id="progText">0 / 2 reviewed</span>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section-title">🥥 Coconut Diseases</div>
+    <a class="sidebar-item active" href="#disease-0" onclick="scrollTo(0)">
+      <span class="sidebar-crop-icon">🥥</span>
+      <span class="sidebar-name">Root (Wilt) Disease</span>
+      <span class="sidebar-status s-pending" id="sidebar-status-0">Pending</span>
+    </a>
+    <a class="sidebar-item" href="#disease-1" onclick="scrollTo(1)">
+      <span class="sidebar-crop-icon">🥥</span>
+      <span class="sidebar-name">Leaf Rot Disease</span>
+      <span class="sidebar-status s-pending" id="sidebar-status-1">Pending</span>
+    </a>
+    <div class="sidebar-section-title" style="margin-top:20px">📊 Review Stats</div>
+    <div style="padding:12px 20px">
+      <div style="font-size:0.78rem;color:var(--soil);line-height:1.8">
+        <div id="sb-total-changes" style="margin-bottom:4px">0 fields edited</div>
+        <div id="sb-total-comments">0 comments added</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN REVIEW AREA -->
+  <main class="review-area" id="mainArea">
+
+    <!-- Summary -->
+    <div class="summary-card">
+      <div class="summary-stat"><div class="summary-num num-approved" id="sum-approved">0</div><div class="summary-lbl">Approved</div></div>
+      <div class="summary-stat"><div class="summary-num num-changes" id="sum-changes">0</div><div class="summary-lbl">Needs Changes</div></div>
+      <div class="summary-stat"><div class="summary-num num-rejected" id="sum-rejected">0</div><div class="summary-lbl">Rejected</div></div>
+      <div class="summary-stat"><div class="summary-num num-pending" id="sum-pending">2</div><div class="summary-lbl">Pending</div></div>
+      <div style="flex:2;min-width:200px;font-size:0.82rem;color:var(--soil);line-height:1.7;border-left:1px solid rgba(92,58,30,0.12);padding-left:20px">
+        <strong style="color:var(--earth);display:block;margin-bottom:4px">How to review:</strong>
+        ✏️ Click any field to edit it directly<br>
+        ➕ Add or remove list items freely<br>
+        💬 Leave comments on specific sections<br>
+        ✅ Set overall disease status above each section<br>
+        ⬇ Export JSON or PDF report when done
+      </div>
+    </div>
+
+    <!-- Disease sections rendered by JS -->
+    <div id="diseasesContainer"></div>
+
+  </main>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="export-overlay" id="exportOverlay">
+  <div class="export-modal">
+    <div class="export-modal-header">
+      <h3>Export Review</h3>
+      <button class="export-close" onclick="closeExport()">✕</button>
+    </div>
+    <div class="export-body">
+      <p style="font-size:0.85rem;color:var(--soil);margin-bottom:16px">Choose your export format. All edits, status changes, and comments will be included.</p>
+      <div class="export-option" onclick="exportJSON()">
+        <span class="export-opt-icon">📄</span>
+        <div>
+          <div class="export-opt-title">Export as JSON</div>
+          <div class="export-opt-desc">Full structured data — reimport into the website builder or database</div>
+        </div>
+      </div>
+      <div class="export-option" onclick="exportReviewReport()">
+        <span class="export-opt-icon">📋</span>
+        <div>
+          <div class="export-opt-title">Export Review Report (HTML)</div>
+          <div class="export-opt-desc">Summary of all changes, comments, and status — share with the content team</div>
+        </div>
+      </div>
+      <div class="export-option" onclick="exportCSV()">
+        <span class="export-opt-icon">📊</span>
+        <div>
+          <div class="export-opt-title">Export Changes as CSV</div>
+          <div class="export-opt-desc">Field-by-field diff — original vs revised, with reviewer comments</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DISEASE DATA ───────────────────────────────────────────────────────────
+const originalData = [
+  {
+    crop:"Coconut",disease_name:"Root (Wilt) Disease",
+    other_names:["Root Wilt","RWD","Coconut Palm Disease","Root Disease","Wilt Disease"],
+    pathogen_or_causal_agent:"Phytoplasma — 'Candidatus Phytoplasma oryzae'-related strain, classified under the Rice Yellow Dwarf (RYD) group, subgroup 16SrXI-B",
+    disease_type:"Phytoplasma disease (phloem-limited wall-less bacteria, class Mollicutes)",
+    affected_stage:["Young seedlings","Pre-bearing palms","Mature bearing palms","All age groups"],
+    main_symptoms:[
+      "Leaflets bend inward abnormally — called 'flaccidity' or 'ribbing' — the most diagnostic symptom",
+      "Yellowing of outer leaves starting from the tips and margins",
+      "Marginal browning and drying (necrosis) of leaflets",
+      "Premature shedding of immature nuts and flower buttons",
+      "Rotting and deterioration of roots",
+      "Drying up of unopened flower sheaths (spathes)",
+      "Poor quality husk, kernel, and oil in affected nuts"
+    ],
+    field_identification_tips:[
+      "Look for the characteristic inward curling or bending of leaflets — this is the hallmark of root wilt",
+      "Affected palms show yellowing from the outer whorls moving inward",
+      "Diseased palms often stand surrounded by apparently healthy palms in the same garden",
+      "Unlike nutrient deficiency, symptoms are progressive and do not respond to fertilizer application alone"
+    ],
+    favourable_conditions:[
+      "Disease is endemic across eight southern districts of Kerala",
+      "Spread is erratic and occurs in jumps, irrespective of soil type",
+      "Waterlogged or poorly drained soils worsen palm health and accelerate disease progression",
+      "Presence of insect vectors (lace bug and planthopper) in the garden"
+    ],
+    mode_of_spread:[
+      "Insect vectors: Lace bug (Stephanitis typica) and Planthopper (Proutista moesta) are the confirmed vectors",
+      "Aerial spread by flying insects explains the 'jump' pattern of disease spread — up to 1–4 km per year",
+      "Carrying seedlings or planting material from diseased areas to disease-free zones"
+    ],
+    prevention:[
+      "Use only certified, disease-free seedlings raised from ELISA-tested mother palms",
+      "Plant resistant or tolerant varieties in disease-endemic areas",
+      "Never bring seedlings from disease-affected areas into disease-free zones",
+      "Maintain farm hygiene — remove and destroy diseased palms promptly"
+    ],
+    cultural_management:[
+      "Remove and destroy disease-advanced palms immediately to reduce field inoculum",
+      "Replant with RWD-resistant varieties: Kalpasree, Kalparaksha, or Kalpa Sankara hybrid",
+      "Apply 25 kg farm yard manure or 10 kg vermicompost enriched with Trichoderma harzianum per palm per year",
+      "Apply NPK fertilizers based on soil test in two splits during May–June and August–September"
+    ],
+    biological_management:[
+      "Bio-prime seedlings with Pseudomonas fluorescens (talc-based) at 4, 7, and 10 months after sowing",
+      "At main field planting, dip seedling roots in P. fluorescens slurry"
+    ],
+    chemical_management_general:[
+      "There is currently no chemical cure for root wilt disease itself, as it is caused by a phytoplasma",
+      "Manage associated Leaf Rot Disease with hexaconazole 5 EC applied around the base of the spindle leaf",
+      "Consult a qualified plant pathology expert for specific treatment recommendations"
+    ],
+    when_to_contact_expert:[
+      "When more than 20–30% of palms in a garden show flaccidity symptoms",
+      "When juvenile palms show symptoms within 1–2 years of planting in a new area",
+      "Before replanting — to confirm variety suitability and get ELISA-tested seedlings"
+    ],
+    farmer_faq:[
+      {q:"Is root wilt disease curable?",a:"Root wilt has no direct chemical cure. The disease is caused by a phytoplasma organism. Proper nutrition, removing heavily diseased palms, controlling leaf rot, and growing resistant varieties help manage it."},
+      {q:"Which coconut varieties are safe to plant in a root wilt area?",a:"Kalpasree (Chowghat Green Dwarf), Kalparaksha (Malayan Green Dwarf), and the Kalpa Sankara hybrid (CGD x WCT) have been officially released for planting in root wilt endemic areas."},
+      {q:"Will applying more fertilizer cure the disease?",a:"Fertilizers do not cure root wilt. However, good nutrition keeps affected palms stronger, slows disease progression, and improves yield. Fertilizer is a supportive practice, not a treatment."}
+    ],
+    expert_note:"Root wilt is a slow, debilitating, non-lethal disease. Even in affected gardens, productivity of 150–200 nuts per palm per year has been demonstrated under improved management. Focus on integrated management: removing disease-advanced palms, using resistant varieties for replanting, maintaining soil health with organic matter and balanced nutrition, and controlling leaf rot.",
+    website_summary:"Coconut Root (Wilt) Disease is a serious phytoplasma disease endemic in the eight southern districts of Kerala, India, causing progressive decline in coconut palm health and productivity. Characterized by the inward bending of leaflets (flaccidity), yellowing, and premature nut drop, the disease is spread by insect vectors including the lace bug and planthopper.",
+    whatsapp_short_reply:"Root Wilt (Phytoplasma): Key sign is inward bending of leaflets. No direct cure — use resistant varieties (Kalpasree/Kalparaksha), remove diseased palms, improve soil nutrition, and control leaf rot. Contact us for ELISA testing.",
+    seo_keywords:["coconut root wilt disease Kerala","root wilt symptoms coconut","phytoplasma coconut disease","coconut flaccidity disease","Kalpasree Kalparaksha resistant variety"],
+    review_status:"pending"
+  },
+  {
+    crop:"Coconut",disease_name:"Leaf Rot Disease",
+    other_names:["LRD","Spindle Rot","Crown Rot"],
+    pathogen_or_causal_agent:"Fungal complex — primary pathogens are Colletotrichum gloeosporioides and Exserohilum rostratum; secondary fungi include Gliocladium vermoeseni, Fusarium spp., Thielaviopsis paradoxa, Rhizoctonia solani",
+    disease_type:"Fungal disease (complex — multiple fungi acting together)",
+    affected_stage:["All age groups","Palms below 25 years especially vulnerable","Bearing palms","Young seedlings"],
+    main_symptoms:[
+      "Water-soaked brownish lesions appear first on the emerging spindle (the youngest, tightly rolled leaf)",
+      "Lesions enlarge and merge, causing extensive rotting of the spindle leaf",
+      "Rotten spindle tips stick together and fail to open properly — a characteristic visual sign",
+      "Mold growth (fungal mycelium and spore masses) visible on rotting spindle surface",
+      "Blackening and shrivelling of leaf midribs and leaflet tips",
+      "Foul smell emanating from the rotting spindle"
+    ],
+    field_identification_tips:[
+      "Look at the crown — if the spindle (innermost leaf) is brown, rotting, or refuses to open, suspect leaf rot",
+      "Rotten leaflet tips sticking together at the top while the base is open is a classic sign",
+      "Disease is most active and visible during the monsoon season when humidity is highest",
+      "Leaf rot almost exclusively attacks palms that already have root wilt"
+    ],
+    favourable_conditions:[
+      "High atmospheric humidity and low temperatures — peak incidence during monsoon (June–September)",
+      "Free moisture on leaf surface from rain and morning dew",
+      "Root (Wilt) Disease weakens the palm, making it highly susceptible to fungal attack",
+      "Palms under nutritional stress show higher incidence"
+    ],
+    mode_of_spread:[
+      "Windborne fungal spores — Colletotrichum gloeosporioides spore population peaks during monsoon",
+      "Rain splash disperses spores from infected tissue to nearby healthy spindles",
+      "Fungal spores survive in infected leaf debris on the ground and re-infect during wet months"
+    ],
+    prevention:[
+      "Maintain general palm health through balanced fertilization, proper drainage, and irrigation during summer",
+      "Keep the crown clean — remove dead and heavily infected leaves before the monsoon",
+      "Control Root Wilt Disease to reduce palm susceptibility to leaf rot"
+    ],
+    cultural_management:[
+      "Cut and remove only the leaf rot-affected portions of the spindle and the two topmost fully opened leaves to reduce pathogen levels",
+      "Dispose of all cut and infected leaf portions by burning — do not compost them",
+      "Apply balanced doses of NPK fertilizers and organic manures to keep palms in good health",
+      "Clean the crown before the onset of monsoon every year as a routine practice"
+    ],
+    biological_management:[
+      "Talc-based preparation of Pseudomonas fluorescens applied at 50g in 500 ml water per palm is recommended",
+      "Bacillus subtilis (talc-based) applied individually or as a consortium with P. fluorescens"
+    ],
+    chemical_management_general:[
+      "Hexaconazole 5 EC is a broad-spectrum systemic fungicide identified as effective against leaf rot pathogens",
+      "The fungicide is poured into the spindle well (top leaf axil) rather than sprayed",
+      "Prophylactic treatment during April–May and October–November is recommended in endemic areas",
+      "Consult a qualified plant pathology expert for specific treatment recommendations and dosages"
+    ],
+    when_to_contact_expert:[
+      "When the spindle leaf is completely rotted and the palm shows crown decline",
+      "When leaf rot recurs repeatedly on the same palm despite treatment",
+      "When more than 50% of palms in a garden show leaf rot symptoms"
+    ],
+    farmer_faq:[
+      {q:"Does leaf rot kill the coconut palm?",a:"Leaf rot itself is not fatal, but it seriously reduces photosynthesis and nut yield. When combined with Root Wilt Disease — which is the case in over 99% of leaf rot occurrences — the palm's health declines rapidly."},
+      {q:"Should I remove the entire rotted leaf?",a:"No. Remove only the affected (rotted) portions of the spindle and the two topmost diseased open leaves. Removing entirely healthy leaves unnecessarily reduces the palm's photosynthesis and recovery capacity."},
+      {q:"When is the best time to apply preventive treatment for leaf rot?",a:"April–May (before monsoon) and October–November (after monsoon) are the recommended windows for preventive treatment."}
+    ],
+    expert_note:"Leaf rot disease management is critical for coconut gardens in root wilt endemic areas, as the two diseases create a destructive combination. The palm weakened by root wilt phytoplasma becomes an easy target for leaf rot fungi. Aggressive management of leaf rot through phytosanitation, proper nutrition, and timely fungicide or bioagent application can significantly improve palm health scores.",
+    website_summary:"Coconut Leaf Rot Disease is a fungal complex disease that attacks the emerging spindle (youngest leaf) of coconut palms, causing rotting, crown damage, and significant yield loss. It is closely linked with Root (Wilt) Disease. With timely phytosanitation, appropriate fungicide or bioagent application, and good nutritional management, leaf rot can be effectively controlled.",
+    whatsapp_short_reply:"Leaf Rot (Fungal): Rotting spindle leaf, brown lesions, sticky leaf tips. Cut and remove affected portions, apply hexaconazole or Pseudomonas fluorescens around spindle base. Prevent with pre-monsoon treatment. Call us for guidance.",
+    seo_keywords:["coconut leaf rot disease","spindle rot coconut","Colletotrichum coconut disease","coconut crown rot Kerala","hexaconazole coconut leaf rot"],
+    review_status:"pending"
+  }
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let reviewData = JSON.parse(JSON.stringify(originalData));
+let reviews = {}; // {diseaseIdx: {status, comments:[{author,time,field,text}]}}
+let editTracker = {}; // track which fields changed
+
+originalData.forEach((_,i)=>{
+  reviews[i] = {status:'pending', comments:[]};
+  editTracker[i] = {};
+});
+
+// Load saved state
+const saved = localStorage.getItem('agripath_review_v2');
+if(saved){
+  try{
+    const s = JSON.parse(saved);
+    if(s.reviewData) reviewData = s.reviewData;
+    if(s.reviews) reviews = s.reviews;
+    if(s.editTracker) editTracker = s.editTracker;
+    if(s.reviewer) document.getElementById('reviewerName').value = s.reviewer;
+  }catch(e){}
+}
+
+// ─── FIELD DEFINITIONS ────────────────────────────────────────────────────────
+const textFields = ['disease_name','pathogen_or_causal_agent','disease_type','expert_note','website_summary','whatsapp_short_reply'];
+const listFields = ['other_names','affected_stage','main_symptoms','field_identification_tips','favourable_conditions','mode_of_spread','prevention','cultural_management','biological_management','chemical_management_general','when_to_contact_expert','seo_keywords'];
+const fieldLabels = {
+  disease_name:'Disease Name',
+  pathogen_or_causal_agent:'Causal Agent / Pathogen',
+  disease_type:'Disease Type',
+  other_names:'Other Names / Synonyms',
+  affected_stage:'Affected Growth Stages',
+  main_symptoms:'Main Symptoms',
+  field_identification_tips:'Field Identification Tips',
+  favourable_conditions:'Favourable Conditions',
+  mode_of_spread:'Mode of Spread',
+  prevention:'Prevention Practices',
+  cultural_management:'Cultural Management',
+  biological_management:'Biological Management',
+  chemical_management_general:'Chemical Management (General)',
+  when_to_contact_expert:'When to Contact an Expert',
+  farmer_faq:'Farmer FAQ',
+  expert_note:'Expert Note',
+  website_summary:'Website Summary',
+  whatsapp_short_reply:'WhatsApp Short Reply',
+  seo_keywords:'SEO Keywords'
+};
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(){
+  const container = document.getElementById('diseasesContainer');
+  container.innerHTML = reviewData.map((d,di) => buildDiseaseSection(d,di)).join('');
+  updateProgress();
+  attachAutoResize();
+}
+
+function buildDiseaseSection(d,di){
+  const r = reviews[di];
+  const statusMap = {pending:'s-pending',approved:'s-approved',changes:'s-changes',rejected:'s-rejected'};
+  const statusLbl = {pending:'Pending',approved:'✅ Approved',changes:'⚠️ Needs Changes',rejected:'❌ Rejected'};
+
+  let fieldsHTML = '';
+
+  // Text fields
+  textFields.forEach(f=>{
+    if(f==='disease_name') return;
+    const changed = editTracker[di][f];
+    fieldsHTML += `
+      <div class="field-group" id="fg-${di}-${f}">
+        <div class="field-header">
+          <div class="field-label">
+            ${fieldLabels[f]}
+            <span class="field-changed-badge" id="badge-${di}-${f}" style="${changed?'display:inline':'display:none'}">Edited</span>
+          </div>
+          <span class="edit-hint">Click to edit</span>
+        </div>
+        <textarea class="editable-text" data-di="${di}" data-field="${f}" rows="3"
+          oninput="onTextEdit(this)"
+          onfocus="this.closest('.editable-text') && this.classList.add('focused')"
+        >${escHtml(d[f]||'')}</textarea>
+      </div>`;
+  });
+
+  // List fields
+  listFields.forEach(f=>{
+    const items = d[f]||[];
+    const changed = editTracker[di][f];
+    fieldsHTML += `
+      <div class="field-group" id="fg-${di}-${f}">
+        <div class="field-header">
+          <div class="field-label">
+            ${fieldLabels[f]}
+            <span class="field-changed-badge" id="badge-${di}-${f}" style="${changed?'display:inline':'display:none'}">Edited</span>
+          </div>
+          <span class="edit-hint">Click item to edit · + to add</span>
+        </div>
+        <div class="editable-list" id="list-${di}-${f}">
+          ${items.map((item,ii)=>buildListItem(di,f,ii,item)).join('')}
+          <div class="add-item-row">
+            <button class="add-item-btn" onclick="addListItem(${di},'${f}')">＋ Add item</button>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // FAQ
+  const changed_faq = editTracker[di]['farmer_faq'];
+  fieldsHTML += `
+    <div class="field-group" id="fg-${di}-farmer_faq">
+      <div class="field-header">
+        <div class="field-label">
+          ${fieldLabels['farmer_faq']}
+          <span class="field-changed-badge" id="badge-${di}-farmer_faq" style="${changed_faq?'display:inline':'display:none'}">Edited</span>
+        </div>
+        <span class="edit-hint">Edit questions and answers</span>
+      </div>
+      <div id="faq-list-${di}">
+        ${(d.farmer_faq||[]).map((fq,fi)=>buildFaqItem(di,fi,fq)).join('')}
+      </div>
+      <button class="add-item-btn" style="margin-top:8px;padding:8px 14px;border:1.5px dashed rgba(92,58,30,0.3);border-radius:8px;color:var(--leaf);background:transparent;cursor:pointer;font-family:inherit;font-size:0.82rem;font-weight:600"
+        onclick="addFaq(${di})">＋ Add FAQ item</button>
+    </div>`;
+
+  // Comments section
+  const comments = r.comments||[];
+  const commentsHTML = comments.map((c,ci)=>`
+    <div class="comment-item" id="comment-${di}-${ci}">
+      <div class="comment-meta">
+        <div class="comment-author">${escHtml(c.author||'Reviewer')}</div>
+        <div class="comment-time">${c.time||''}</div>
+        ${c.field?`<span class="comment-field-tag">${fieldLabels[c.field]||c.field}</span>`:''}
+      </div>
+      <div class="comment-text">${escHtml(c.text)}</div>
+      <button class="comment-del" onclick="deleteComment(${di},${ci})" title="Delete comment">✕</button>
+    </div>
+  `).join('');
+
+  return `
+    <section class="disease-section" id="disease-${di}">
+      <div class="disease-section-header">
+        <div class="crop-tag tag-${d.crop.toLowerCase()}">${d.crop==='Coconut'?'🥥':'🍌'} ${d.crop}</div>
+        <h2 class="disease-title">${escHtml(d.disease_name)}</h2>
+        <p class="disease-pathogen">${escHtml(d.pathogen_or_causal_agent.split('—')[0].trim())}</p>
+      </div>
+
+      <div class="status-control-row">
+        <span class="status-label">Review Status:</span>
+        <div class="status-btns">
+          <button class="status-btn approved ${r.status==='approved'?'active':''}" onclick="setStatus(${di},'approved')">✅ Approve</button>
+          <button class="status-btn changes ${r.status==='changes'?'active':''}" onclick="setStatus(${di},'changes')">⚠️ Needs Changes</button>
+          <button class="status-btn rejected ${r.status==='rejected'?'active':''}" onclick="setStatus(${di},'rejected')">❌ Reject</button>
+        </div>
+        <button class="comment-quick" onclick="focusCommentBox(${di})">💬 Add Comment</button>
+      </div>
+
+      <div class="fields-body">
+        <div class="section-header-row"><h3>Core Information</h3><div class="section-divider"></div></div>
+        ${fieldsHTML}
+      </div>
+
+      <div class="comments-panel">
+        <div class="comments-title">
+          💬 Reviewer Comments
+          <span class="comment-count" id="comment-count-${di}">${comments.length}</span>
+        </div>
+        <div id="comments-list-${di}">${commentsHTML}</div>
+        <div class="comment-add-area">
+          <select id="comment-field-${di}">
+            <option value="">General comment</option>
+            ${[...textFields,...listFields,'farmer_faq'].map(f=>`<option value="${f}">${fieldLabels[f]}</option>`).join('')}
+          </select>
+          <input type="text" id="comment-input-${di}" placeholder="Type your comment…" onkeydown="if(event.key==='Enter')addComment(${di})">
+          <button class="comment-submit" onclick="addComment(${di})">Add</button>
+        </div>
+      </div>
+    </section>`;
+}
+
+function buildListItem(di,f,ii,val){
+  return `<div class="list-item-row" id="li-${di}-${f}-${ii}">
+    <span class="list-item-bullet">▸</span>
+    <textarea class="list-item-input" data-di="${di}" data-field="${f}" data-ii="${ii}"
+      oninput="onListEdit(this)" rows="1">${escHtml(val)}</textarea>
+    <button class="list-item-del" onclick="deleteListItem(${di},'${f}',${ii})" title="Remove item">✕</button>
+  </div>`;
+}
+
+function buildFaqItem(di,fi,fq){
+  return `<div class="faq-edit-item" id="faq-${di}-${fi}">
+    <div class="faq-field">
+      <div class="faq-field-label">Question</div>
+      <textarea class="faq-input" data-di="${di}" data-fi="${fi}" data-part="q"
+        oninput="onFaqEdit(this)" rows="2">${escHtml(fq.q||'')}</textarea>
+    </div>
+    <div class="faq-field">
+      <div class="faq-field-label">Answer</div>
+      <textarea class="faq-input" data-di="${di}" data-fi="${fi}" data-part="a"
+        oninput="onFaqEdit(this)" rows="3">${escHtml(fq.a||'')}</textarea>
+    </div>
+    <div class="faq-del-row">
+      <button class="faq-del-btn" onclick="deleteFaq(${di},${fi})">Remove this FAQ</button>
+    </div>
+  </div>`;
+}
+
+// ─── EDIT HANDLERS ────────────────────────────────────────────────────────────
+function onTextEdit(el){
+  const di=+el.dataset.di, f=el.dataset.field;
+  reviewData[di][f]=el.value;
+  editTracker[di][f]=true;
+  markEdited(di,f);
+  autoSave();
+}
+
+function onListEdit(el){
+  const di=+el.dataset.di, f=el.dataset.field, ii=+el.dataset.ii;
+  reviewData[di][f][ii]=el.value;
+  editTracker[di][f]=true;
+  markEdited(di,f);
+  autoResize(el);
+  autoSave();
+}
+
+function onFaqEdit(el){
+  const di=+el.dataset.di, fi=+el.dataset.fi, part=el.dataset.part;
+  if(!reviewData[di].farmer_faq[fi]) reviewData[di].farmer_faq[fi]={q:'',a:''};
+  reviewData[di].farmer_faq[fi][part]=el.value;
+  editTracker[di]['farmer_faq']=true;
+  markEdited(di,'farmer_faq');
+  autoResize(el);
+  autoSave();
+}
+
+function markEdited(di,f){
+  const badge=document.getElementById(`badge-${di}-${f}`);
+  if(badge) badge.style.display='inline';
+  updateSidebarStats();
+}
+
+function addListItem(di,f){
+  reviewData[di][f].push('');
+  editTracker[di][f]=true;
+  const list=document.getElementById(`list-${di}-${f}`);
+  const addRow=list.querySelector('.add-item-row');
+  const ii=reviewData[di][f].length-1;
+  const div=document.createElement('div');
+  div.innerHTML=buildListItem(di,f,ii,'');
+  list.insertBefore(div.firstElementChild,addRow);
+  markEdited(di,f);
+  autoSave();
+  list.querySelector(`[data-ii="${ii}"]`).focus();
+}
+
+function deleteListItem(di,f,ii){
+  reviewData[di][f].splice(ii,1);
+  editTracker[di][f]=true;
+  const list=document.getElementById(`list-${di}-${f}`);
+  const addRow=list.querySelector('.add-item-row');
+  list.innerHTML='';
+  reviewData[di][f].forEach((v,i)=>{
+    const d2=document.createElement('div');
+    d2.innerHTML=buildListItem(di,f,i,v);
+    list.appendChild(d2.firstElementChild);
+  });
+  list.appendChild(addRow);
+  markEdited(di,f);
+  autoSave();
+}
+
+function addFaq(di){
+  reviewData[di].farmer_faq.push({q:'',a:''});
+  editTracker[di]['farmer_faq']=true;
+  const cont=document.getElementById(`faq-list-${di}`);
+  const fi=reviewData[di].farmer_faq.length-1;
+  const div=document.createElement('div');
+  div.innerHTML=buildFaqItem(di,fi,{q:'',a:''});
+  cont.appendChild(div.firstElementChild);
+  markEdited(di,'farmer_faq');
+  autoSave();
+}
+
+function deleteFaq(di,fi){
+  reviewData[di].farmer_faq.splice(fi,1);
+  editTracker[di]['farmer_faq']=true;
+  const cont=document.getElementById(`faq-list-${di}`);
+  cont.innerHTML=reviewData[di].farmer_faq.map((fq,i)=>buildFaqItem(di,i,fq)).join('');
+  markEdited(di,'farmer_faq');
+  autoSave();
+}
+
+// ─── STATUS ───────────────────────────────────────────────────────────────────
+function setStatus(di,status){
+  reviews[di].status=status;
+  reviewData[di].review_status=status;
+  const section=document.getElementById(`disease-${di}`);
+  section.querySelectorAll('.status-btn').forEach(b=>b.classList.remove('active'));
+  section.querySelector(`.status-btn.${status}`).classList.add('active');
+  const sidebarStatus=document.getElementById(`sidebar-status-${di}`);
+  const lbl={pending:'Pending',approved:'Approved',changes:'Needs Changes',rejected:'Rejected'};
+  const cls={pending:'s-pending',approved:'s-approved',changes:'s-changes',rejected:'s-rejected'};
+  sidebarStatus.textContent=lbl[status];
+  sidebarStatus.className=`sidebar-status ${cls[status]}`;
+  updateProgress();
+  autoSave();
+  showToast(`Status set: ${lbl[status]}`, status==='approved'?'success':'');
+}
+
+// ─── COMMENTS ────────────────────────────────────────────────────────────────
+function addComment(di){
+  const input=document.getElementById(`comment-input-${di}`);
+  const fieldSel=document.getElementById(`comment-field-${di}`);
+  const text=input.value.trim();
+  if(!text){showToast('Please type a comment first','error');return;}
+  const author=document.getElementById('reviewerName').value.trim()||'Reviewer';
+  const now=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  const comment={author,time:now,field:fieldSel.value,text};
+  reviews[di].comments.push(comment);
+  const list=document.getElementById(`comments-list-${di}`);
+  const ci=reviews[di].comments.length-1;
+  const div=document.createElement('div');
+  div.innerHTML=`<div class="comment-item" id="comment-${di}-${ci}">
+    <div class="comment-meta">
+      <div class="comment-author">${escHtml(author)}</div>
+      <div class="comment-time">${now}</div>
+      ${comment.field?`<span class="comment-field-tag">${fieldLabels[comment.field]||comment.field}</span>`:''}
+    </div>
+    <div class="comment-text">${escHtml(text)}</div>
+    <button class="comment-del" onclick="deleteComment(${di},${ci})" title="Delete">✕</button>
+  </div>`;
+  list.appendChild(div.firstElementChild);
+  input.value='';
+  fieldSel.value='';
+  document.getElementById(`comment-count-${di}`).textContent=reviews[di].comments.length;
+  updateSidebarStats();
+  autoSave();
+  showToast('Comment added');
+}
+
+function deleteComment(di,ci){
+  reviews[di].comments.splice(ci,1);
+  render();
+  autoSave();
+  showToast('Comment removed');
+}
+
+function focusCommentBox(di){
+  const input=document.getElementById(`comment-input-${di}`);
+  if(input){input.scrollIntoView({behavior:'smooth',block:'center'});input.focus();}
+}
+
+// ─── PROGRESS ────────────────────────────────────────────────────────────────
+function updateProgress(){
+  const counts={approved:0,changes:0,rejected:0,pending:0};
+  Object.values(reviews).forEach(r=>counts[r.status]=(counts[r.status]||0)+1);
+  const total=reviewData.length;
+  const done=counts.approved+counts.changes+counts.rejected;
+  document.getElementById('prog-approved').textContent=`${counts.approved} Approved`;
+  document.getElementById('prog-changes').textContent=`${counts.changes} Needs Changes`;
+  document.getElementById('prog-rejected').textContent=`${counts.rejected} Rejected`;
+  document.getElementById('prog-pending').textContent=`${counts.pending} Pending`;
+  document.getElementById('progBar').style.width=`${Math.round((done/total)*100)}%`;
+  document.getElementById('progText').textContent=`${done} / ${total} reviewed`;
+  document.getElementById('sum-approved').textContent=counts.approved;
+  document.getElementById('sum-changes').textContent=counts.changes;
+  document.getElementById('sum-rejected').textContent=counts.rejected;
+  document.getElementById('sum-pending').textContent=counts.pending;
+}
+
+function updateSidebarStats(){
+  let totalEdits=0, totalComments=0;
+  reviewData.forEach((_,i)=>{
+    Object.values(editTracker[i]).forEach(v=>{if(v)totalEdits++;});
+    totalComments+=(reviews[i].comments||[]).length;
+  });
+  document.getElementById('sb-total-changes').textContent=`${totalEdits} fields edited`;
+  document.getElementById('sb-total-comments').textContent=`${totalComments} comments added`;
+}
+
+// ─── SAVE / AUTO-SAVE ────────────────────────────────────────────────────────
+let saveTimer;
+function autoSave(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>saveProgress(true),2000);
+}
+
+function saveProgress(silent=false){
+  const state={
+    reviewData,reviews,editTracker,
+    reviewer:document.getElementById('reviewerName').value,
+    savedAt:new Date().toISOString()
+  };
+  localStorage.setItem('agripath_review_v2',JSON.stringify(state));
+  if(!silent) showToast('Progress saved to browser ✓','success');
+}
+
+// ─── EXPORT ───────────────────────────────────────────────────────────────────
+function openExport(){document.getElementById('exportOverlay').classList.add('open')}
+function closeExport(){document.getElementById('exportOverlay').classList.remove('open')}
+
+function exportJSON(){
+  const out=reviewData.map((d,i)=>({
+    ...d,
+    review_status:reviews[i].status,
+    reviewer_comments:reviews[i].comments,
+    review_metadata:{
+      reviewer:document.getElementById('reviewerName').value||'Unknown',
+      exported_at:new Date().toISOString(),
+      fields_edited:Object.keys(editTracker[i]).filter(k=>editTracker[i][k])
+    }
+  }));
+  download('agripath_reviewed.json',JSON.stringify(out,null,2),'application/json');
+  closeExport();showToast('JSON exported ✓','success');
+}
+
+function exportCSV(){
+  const rows=[['Disease','Field','Original','Revised','Status','Reviewer Comments']];
+  reviewData.forEach((d,i)=>{
+    const orig=originalData[i];
+    const fields=[...textFields,...listFields,'farmer_faq'];
+    fields.forEach(f=>{
+      if(!editTracker[i][f]) return;
+      const origVal=Array.isArray(orig[f])?orig[f].join(' | '):(typeof orig[f]==='object'?JSON.stringify(orig[f]):orig[f])||'';
+      const newVal=Array.isArray(d[f])?d[f].join(' | '):(typeof d[f]==='object'?JSON.stringify(d[f]):d[f])||'';
+      const comments=reviews[i].comments.filter(c=>c.field===f).map(c=>`[${c.author}]: ${c.text}`).join(' // ');
+      rows.push([d.disease_name,fieldLabels[f]||f,origVal,newVal,reviews[i].status,comments]);
+    });
+  });
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  download('agripath_changes.csv',csv,'text/csv');
+  closeExport();showToast('CSV exported ✓','success');
+}
+
+function exportReviewReport(){
+  const reviewer=document.getElementById('reviewerName').value||'Expert Reviewer';
+  const statusEmoji={approved:'✅',changes:'⚠️',rejected:'❌',pending:'⏳'};
+  let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Review Report</title>
+  <style>body{font-family:Georgia,serif;max-width:820px;margin:40px auto;padding:0 24px;color:#2C1A0E;line-height:1.7}
+  h1{font-size:2rem;margin-bottom:4px}h2{font-size:1.3rem;margin:28px 0 12px;border-bottom:2px solid #E8C99A;padding-bottom:8px}
+  h3{font-size:1rem;margin:16px 0 6px;color:#5C3A1E}.status-pill{display:inline-block;padding:3px 12px;border-radius:12px;font-size:0.8rem;font-weight:bold;margin-bottom:12px}
+  .approved{background:#DCFCE7;color:#166534}.changes{background:#FEF3C7;color:#7C2D12}.rejected{background:#FEE2E2;color:#991B1B}.pending{background:#F3F4F6;color:#374151}
+  ul{margin:0 0 12px 20px}li{margin-bottom:4px;font-size:0.9rem}.comment-box{background:#F0F9FF;border-left:3px solid #0EA5E9;padding:10px 14px;margin:8px 0;border-radius:0 8px 8px 0}
+  .comment-box .meta{font-size:0.75rem;color:#64748B;margin-bottom:4px}.edit-marker{background:#EFF6FF;color:#1D4ED8;font-size:0.72rem;padding:2px 7px;border-radius:5px;font-weight:bold}
+  table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:0.85rem}td,th{border:1px solid #E8C99A;padding:8px 12px;text-align:left}th{background:#FAF5ED}
+  .meta-info{background:#FAF5ED;border:1px solid #E8C99A;border-radius:10px;padding:16px;margin-bottom:28px;font-size:0.88rem}
+  </style></head><body>
+  <h1>🌿 AgriPath Disease KB — Review Report</h1>
+  <div class="meta-info">
+    <strong>Reviewer:</strong> ${escHtml(reviewer)}<br>
+    <strong>Exported:</strong> ${new Date().toLocaleString('en-IN')}<br>
+    <strong>Total diseases reviewed:</strong> ${reviewData.length}
+  </div>`;
+
+  reviewData.forEach((d,i)=>{
+    const r=reviews[i];
+    const orig=originalData[i];
+    const editedFields=Object.keys(editTracker[i]).filter(k=>editTracker[i][k]);
+    html+=`<h2>${d.disease_name} (${d.crop})</h2>
+    <div class="status-pill ${r.status}">${statusEmoji[r.status]} ${r.status.toUpperCase()}</div>`;
+
+    if(editedFields.length>0){
+      html+=`<h3>Edited Fields (${editedFields.length})</h3><table><tr><th>Field</th><th>Original</th><th>Revised</th></tr>`;
+      editedFields.forEach(f=>{
+        const ov=Array.isArray(orig[f])?orig[f].join('; '):(typeof orig[f]==='object'?JSON.stringify(orig[f]):orig[f])||'—';
+        const nv=Array.isArray(d[f])?d[f].join('; '):(typeof d[f]==='object'?JSON.stringify(d[f]):d[f])||'—';
+        html+=`<tr><td><strong>${fieldLabels[f]||f}</strong></td><td style="color:#888">${escHtml(String(ov).substring(0,200))}${ov.length>200?'…':''}</td><td>${escHtml(String(nv).substring(0,200))}${nv.length>200?'…':''}</td></tr>`;
+      });
+      html+=`</table>`;
+    } else {
+      html+=`<p style="color:#888;font-size:0.88rem;font-style:italic">No field edits made.</p>`;
+    }
+
+    if(r.comments.length>0){
+      html+=`<h3>Comments (${r.comments.length})</h3>`;
+      r.comments.forEach(c=>{
+        html+=`<div class="comment-box"><div class="meta">${c.author} · ${c.time}${c.field?` · Field: <strong>${fieldLabels[c.field]||c.field}</strong>`:''}</div>${escHtml(c.text)}</div>`;
+      });
+    }
+  });
+
+  html+=`</body></html>`;
+  download('agripath_review_report.html',html,'text/html');
+  closeExport();showToast('Review report exported ✓','success');
+}
+
+function download(filename,content,type){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type}));
+  a.download=filename;a.click();
+}
+
+// ─── UTILITIES ────────────────────────────────────────────────────────────────
+function escHtml(str){
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg,type=''){
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+function autoResize(el){
+  el.style.height='auto';
+  el.style.height=(el.scrollHeight)+'px';
+}
+
+function attachAutoResize(){
+  document.querySelectorAll('.editable-text,.list-item-input,.faq-input').forEach(el=>{
+    autoResize(el);
+    el.addEventListener('input',()=>autoResize(el));
+  });
+}
+
+function scrollTo(idx){
+  document.getElementById(`disease-${idx}`)?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Sidebar active tracking
+window.addEventListener('scroll',()=>{
+  let current=0;
+  reviewData.forEach((_,i)=>{
+    const el=document.getElementById(`disease-${i}`);
+    if(el&&el.getBoundingClientRect().top<200) current=i;
+  });
+  document.querySelectorAll('.sidebar-item').forEach((el,i)=>el.classList.toggle('active',i===current));
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+render();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeExport();});
+
+// Keyboard shortcut: Ctrl+S to save
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveProgress();}
+});
+</script>
+</body>
+</html>

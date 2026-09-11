@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriPath Kerala — Coconut & Plantation Crop Disease Advisory</title>
+<meta name="description" content="Expert plant pathology advisory for coconut, banana and plantation crop diseases in Kerala. ICAR-CPCRI verified disease identification, management, and farm consultation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+Malayalam:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── CSS VARIABLES ─── */
+:root{
+  --earth:#1E1108;--bark:#4A2C10;--soil:#7A4F28;--clay:#C08050;
+  --straw:#E5C49A;--cream:#FAF6EE;--parchment:#F3EAD8;
+  --leaf:#1E5C1E;--leaf-mid:#2D7A2D;--leaf-light:#3D9E3D;--leaf-pale:#D6EDCC;
+  --alert:#A83210;--alert-pale:#FDEADF;
+  --sky:#1A4A78;--sky-pale:#D6E8F8;
+  --gold:#B8860B;--gold-pale:#FBF3D0;
+  --wa:#128C7E;--wa-light:#25D366;
+  --r:16px;--rs:10px;--rm:12px;
+  --sh:0 2px 16px rgba(30,17,8,.1);--sh-lg:0 8px 40px rgba(30,17,8,.18);
+  --tr:.18s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--earth);line-height:1.7;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+
+/* ─── LANGUAGE BODY CLASS ─── */
+body.ml *:not(.en-only){font-family:'Noto Serif Malayalam','DM Sans',sans-serif}
+body.ml .ml-hide{display:none}
+body.en .en-hide{display:none}
+.ml-text{display:none}
+body.ml .ml-text{display:block}
+body.ml .en-text{display:none}
+.en-text{display:block}
+
+/* ─── STICKY WA BUTTON ─── */
+.wa-sticky{
+  position:fixed;bottom:24px;right:24px;z-index:900;
+  background:var(--wa-light);color:#fff;border:none;border-radius:50%;
+  width:58px;height:58px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,.5);font-size:28px;
+  transition:transform var(--tr),box-shadow var(--tr);
+  text-decoration:none
+}
+.wa-sticky:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.65)}
+.wa-sticky-label{
+  position:absolute;right:68px;top:50%;transform:translateY(-50%);
+  background:var(--earth);color:var(--straw);font-size:.75rem;font-weight:600;
+  white-space:nowrap;padding:6px 12px;border-radius:var(--rs);
+  opacity:0;pointer-events:none;transition:opacity var(--tr)
+}
+.wa-sticky:hover .wa-sticky-label{opacity:1}
+
+/* ─── HEADER ─── */
+.site-header{
+  background:var(--earth);position:sticky;top:0;z-index:800;
+  box-shadow:0 2px 20px rgba(0,0,0,.35)
+}
+.header-inner{
+  max-width:1200px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;gap:12px;height:64px
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-mark{
+  width:38px;height:38px;background:var(--leaf-mid);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0
+}
+.logo-text{font-family:'Playfair Display',serif;color:var(--straw);font-size:1.05rem;line-height:1.2}
+.logo-sub{font-size:.65rem;color:var(--clay);font-family:'DM Sans',sans-serif;font-weight:400;display:block}
+.header-nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav-link{
+  color:rgba(232,196,154,.75);font-size:.82rem;font-weight:500;
+  padding:6px 12px;border-radius:var(--rs);transition:all var(--tr);
+  white-space:nowrap
+}
+.nav-link:hover,.nav-link.active{background:rgba(255,255,255,.1);color:var(--straw)}
+.lang-toggle{
+  display:flex;align-items:center;background:rgba(255,255,255,.1);
+  border-radius:20px;padding:3px;gap:2px;margin-left:8px;border:none
+}
+.lang-btn{
+  background:transparent;border:none;color:rgba(232,196,154,.75);
+  font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:16px;
+  transition:all var(--tr);white-space:nowrap;font-family:'DM Sans',sans-serif
+}
+.lang-btn.active{background:var(--leaf-mid);color:#fff}
+.nav-cta{
+  background:var(--leaf-mid);color:#fff;border:none;border-radius:var(--rs);
+  padding:8px 16px;font-size:.82rem;font-weight:600;margin-left:8px;
+  transition:background var(--tr);white-space:nowrap
+}
+.nav-cta:hover{background:var(--leaf-light)}
+.hamburger{
+  display:none;background:transparent;border:1px solid rgba(255,255,255,.2);
+  color:var(--straw);border-radius:var(--rs);padding:6px 10px;font-size:18px;
+  margin-left:auto
+}
+
+/* ─── MOBILE NAV ─── */
+.mobile-nav{
+  display:none;background:var(--bark);padding:12px 20px;
+  flex-direction:column;gap:4px
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a,.mobile-nav button{
+  color:var(--straw);font-size:.9rem;padding:10px 14px;
+  border-radius:var(--rs);border:none;background:transparent;
+  text-align:left;font-family:'DM Sans',sans-serif;font-weight:500;
+  transition:background var(--tr)
+}
+.mobile-nav a:hover,.mobile-nav button:hover{background:rgba(255,255,255,.1)}
+.mobile-nav .mobile-cta{background:var(--leaf-mid);color:#fff;text-align:center}
+
+/* ─── SECTIONS ─── */
+section{padding:64px 20px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 14px;border-radius:20px;margin-bottom:16px
+}
+.tag-green{background:var(--leaf-pale);color:var(--leaf)}
+.tag-gold{background:var(--gold-pale);color:var(--gold)}
+.tag-sky{background:var(--sky-pale);color:var(--sky)}
+.tag-alert{background:var(--alert-pale);color:var(--alert)}
+.section-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:800;line-height:1.2;margin-bottom:12px
+}
+.section-sub{color:var(--soil);font-size:1rem;max-width:580px;line-height:1.7}
+
+/* ─── HERO ─── */
+.hero{
+  background:linear-gradient(160deg,var(--earth) 0%,var(--bark) 55%,#3A2010 100%);
+  padding:80px 20px 72px;position:relative;overflow:hidden
+}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(45,122,45,.18),transparent);
+  pointer-events:none
+}
+.hero-inner{
+  max-width:1200px;margin:0 auto;display:grid;
+  grid-template-columns:1fr 420px;gap:48px;align-items:center;position:relative;z-index:1
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(45,106,45,.3);border:1px solid rgba(61,158,61,.4);
+  color:#8FD48F;font-size:.72rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:20px
+}
+.hero h1{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.2rem);
+  font-weight:900;color:var(--cream);line-height:1.12;margin-bottom:18px
+}
+.hero h1 em{color:var(--clay);font-style:normal}
+.hero-desc{color:var(--straw);font-size:1.05rem;line-height:1.75;margin-bottom:28px;opacity:.92;max-width:520px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  background:var(--leaf-mid);color:#fff;border:none;border-radius:var(--rm);
+  padding:14px 28px;font-size:.95rem;font-weight:600;
+  transition:background var(--tr),transform var(--tr);display:inline-flex;align-items:center;gap:8px
+}
+.btn-primary:hover{background:var(--leaf-light);transform:translateY(-1px)}
+.btn-outline{
+  background:transparent;color:var(--straw);border:1.5px solid rgba(232,196,154,.4);
+  border-radius:var(--rm);padding:13px 24px;font-size:.95rem;font-weight:600;
+  transition:all var(--tr);display:inline-flex;align-items:center;gap:8px
+}
+.btn-outline:hover{border-color:var(--straw);background:rgba(232,196,154,.08)}
+.hero-stats{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
+.hero-stat{}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--clay);display:block}
+.hero-stat-lbl{font-size:.72rem;color:rgba(232,196,154,.7);text-transform:uppercase;letter-spacing:.08em}
+
+/* Hero card */
+.hero-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:28px;backdrop-filter:blur(4px)
+}
+.hero-card-title{
+  font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px
+}
+.quick-disease-list{display:flex;flex-direction:column;gap:8px}
+.quick-disease-item{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:12px;
+  transition:background var(--tr);cursor:pointer
+}
+.quick-disease-item:hover{background:rgba(255,255,255,.12)}
+.qdi-icon{font-size:20px;flex-shrink:0}
+.qdi-name{font-size:.88rem;font-weight:600;color:var(--cream)}
+.qdi-type{font-size:.72rem;color:rgba(232,196,154,.65)}
+.qdi-arr{color:var(--clay);margin-left:auto;font-size:18px}
+
+/* ─── TRUST STRIP ─── */
+.trust-strip{background:var(--bark);padding:18px 20px}
+.trust-strip-inner{
+  max-width:1200px;margin:0 auto;display:flex;
+  align-items:center;gap:32px;flex-wrap:wrap;justify-content:center
+}
+.trust-item{
+  display:flex;align-items:center;gap:10px;color:var(--straw);
+  font-size:.82rem;font-weight:500;opacity:.85
+}
+.trust-icon{font-size:18px;color:var(--clay)}
+
+/* ─── SYMPTOM CHECKER ─── */
+#symptom-checker{background:var(--parchment)}
+.checker-wrap{
+  background:#fff;border-radius:20px;border:1px solid rgba(122,79,40,.12);
+  box-shadow:var(--sh-lg);overflow:hidden;max-width:800px;margin:40px auto 0
+}
+.checker-progress{
+  height:5px;background:var(--leaf-pale);position:relative
+}
+.checker-progress-fill{
+  height:100%;background:var(--leaf-mid);border-radius:0 3px 3px 0;
+  transition:width .4s ease
+}
+.checker-header{
+  background:linear-gradient(135deg,var(--earth),var(--bark));
+  padding:24px 28px;display:flex;align-items:center;gap:14px
+}
+.checker-step-badge{
+  background:rgba(255,255,255,.12);color:var(--straw);font-size:.7rem;
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 12px;border-radius:12px;white-space:nowrap
+}
+.checker-q{
+  font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;
+  color:var(--cream);flex:1;line-height:1.3
+}
+.checker-body{padding:28px}
+.checker-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.checker-option{
+  background:var(--cream);border:1.5px solid rgba(122,79,40,.15);border-radius:var(--rm);
+  padding:16px 18px;cursor:pointer;transition:all var(--tr);text-align:left;
+  display:flex;align-items:flex-start;gap:12px
+}
+.checker-option:hover{border-color:var(--leaf-mid);background:var(--leaf-pale)}
+.checker-option.selected{border-color:var(--leaf-mid);background:var(--leaf-pale)}
+.co-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.co-label{font-size:.92rem;font-weight:600;color:var(--earth);line-height:1.3;margin-bottom:3px}
+.co-sub{font-size:.78rem;color:var(--soil)}
+.checker-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:24px;padding-top:20px;border-top:1px solid rgba(122,79,40,.1)
+}
+.btn-checker-back{
+  background:transparent;border:1.5px solid rgba(122,79,40,.2);
+  color:var(--soil);border-radius:var(--rs);padding:9px 18px;
+  font-size:.85rem;font-weight:600
+}
+.btn-checker-back:hover{border-color:var(--clay);color:var(--bark)}
+.btn-checker-next{
+  background:var(--leaf-mid);color:#fff;border:none;border-radius:var(--rs);
+  padding:10px 24px;font-size:.88rem;font-weight:600;
+  transition:background var(--tr)
+}
+.btn-checker-next:hover{background:var(--leaf-light)}
+.btn-checker-next:disabled{background:#ccc;cursor:not-allowed}
+
+/* Result card */
+.checker-result{padding:28px;display:none}
+.checker-result.show{display:block}
+.result-card{
+  background:linear-gradient(135deg,var(--leaf-pale),#EBF7E0);
+  border:1.5px solid var(--leaf-mid);border-radius:16px;padding:24px;margin-bottom:20px
+}
+.result-match{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--leaf);margin-bottom:8px}
+.result-name{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:var(--earth);margin-bottom:6px}
+.result-confidence{
+  display:flex;align-items:center;gap:8px;margin-bottom:16px
+}
+.conf-bar{flex:1;max-width:160px;height:6px;background:rgba(0,0,0,.08);border-radius:3px;overflow:hidden}
+.conf-fill{height:100%;border-radius:3px;background:var(--leaf-mid)}
+.conf-text{font-size:.78rem;font-weight:600;color:var(--leaf)}
+.result-symptoms-matched{margin-bottom:16px}
+.rsm-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--soil);margin-bottom:8px}
+.rsm-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rsm-tag{
+  background:#fff;border:1px solid var(--leaf-pale);color:var(--leaf);
+  font-size:.78rem;padding:3px 10px;border-radius:7px;font-weight:500
+}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn-result-detail{
+  background:var(--leaf-mid);color:#fff;border:none;border-radius:var(--rs);
+  padding:10px 20px;font-size:.85rem;font-weight:600;flex:1;min-width:140px
+}
+.btn-result-wa{
+  background:var(--wa-light);color:#fff;border:none;border-radius:var(--rs);
+  padding:10px 20px;font-size:.85rem;font-weight:600;flex:1;min-width:140px;
+  display:flex;align-items:center;justify-content:center;gap:6px
+}
+.btn-checker-restart{
+  background:transparent;border:1.5px solid rgba(122,79,40,.2);
+  color:var(--soil);border-radius:var(--rs);padding:9px 18px;
+  font-size:.85rem;font-weight:600;margin-top:12px;width:100%
+}
+
+/* ─── DISEASE LIBRARY ─── */
+#diseases{background:var(--cream)}
+.filter-bar{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;align-items:center
+}
+.filter-chip{
+  background:transparent;border:1.5px solid rgba(122,79,40,.2);color:var(--soil);
+  border-radius:20px;padding:6px 16px;font-size:.82rem;font-weight:500;
+  transition:all var(--tr)
+}
+.filter-chip:hover{border-color:var(--clay);color:var(--bark)}
+.filter-chip.active{background:var(--earth);color:var(--straw);border-color:var(--earth)}
+.search-wrap{margin-left:auto;position:relative}
+.search-wrap input{
+  border:1.5px solid rgba(122,79,40,.2);border-radius:20px;
+  padding:7px 14px 7px 36px;font-size:.84rem;background:var(--parchment);
+  font-family:'DM Sans',sans-serif;color:var(--earth);width:220px;outline:none
+}
+.search-wrap input:focus{border-color:var(--leaf-mid)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.45}
+.disease-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
+.disease-card{
+  background:#fff;border-radius:var(--r);border:1px solid rgba(122,79,40,.1);
+  box-shadow:var(--sh);transition:transform var(--tr),box-shadow var(--tr);overflow:hidden;cursor:pointer
+}
+.disease-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.dc-header{padding:20px 22px 16px;border-bottom:1px solid rgba(122,79,40,.07)}
+.dc-badges{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.crop-tag{
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 10px;border-radius:10px
+}
+.ct-coconut{background:var(--leaf-pale);color:var(--leaf)}
+.ct-banana{background:var(--gold-pale);color:var(--gold)}
+.disease-type-tag{
+  font-size:.66rem;font-weight:600;padding:2px 8px;border-radius:7px;margin-left:auto
+}
+.dt-phytoplasma{background:var(--sky-pale);color:var(--sky)}
+.dt-fungal{background:var(--alert-pale);color:var(--alert)}
+.dt-viral{background:var(--gold-pale);color:var(--gold)}
+.dc-title{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;color:var(--earth);margin-bottom:4px;line-height:1.3}
+.dc-pathogen{font-size:.78rem;color:var(--soil);font-style:italic}
+.dc-body{padding:16px 22px}
+.dc-summary{font-size:.86rem;color:#555;line-height:1.65;margin-bottom:14px}
+.dc-symptoms-label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--soil);margin-bottom:7px}
+.dc-symptom-tags{display:flex;flex-wrap:wrap;gap:5px}
+.dc-symptom-tag{
+  background:var(--parchment);border:1px solid var(--straw);color:var(--bark);
+  border-radius:7px;padding:2px 9px;font-size:.74rem;font-weight:500
+}
+.dc-footer{
+  padding:12px 22px;background:var(--parchment);border-top:1px solid rgba(122,79,40,.07);
+  display:flex;align-items:center;justify-content:space-between
+}
+.dc-status{font-size:.72rem;color:var(--soil);display:flex;align-items:center;gap:5px}
+.dc-status-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.dc-status-dot.approved{background:#4CAF50}
+.btn-card-view{
+  background:var(--earth);color:var(--straw);border:none;border-radius:var(--rs);
+  padding:7px 16px;font-size:.8rem;font-weight:600;transition:background var(--tr)
+}
+.btn-card-view:hover{background:var(--leaf-mid);color:#fff}
+
+/* ─── SERVICES ─── */
+#services{background:var(--earth)}
+#services .section-title{color:var(--cream)}
+#services .section-sub{color:var(--straw);opacity:.85}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:40px}
+.service-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r);padding:28px 24px;transition:all var(--tr);position:relative
+}
+.service-card:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.service-card.featured{border-color:var(--leaf-light);background:rgba(45,122,45,.15)}
+.service-popular{
+  position:absolute;top:-11px;left:24px;background:var(--leaf-light);
+  color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 12px;border-radius:10px
+}
+.service-icon{font-size:32px;margin-bottom:16px}
+.service-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--cream);margin-bottom:8px}
+.service-desc{font-size:.86rem;color:var(--straw);opacity:.85;line-height:1.65;margin-bottom:16px}
+.service-includes{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.service-includes li{font-size:.82rem;color:rgba(232,196,154,.8);display:flex;align-items:center;gap:7px}
+.service-includes li::before{content:'✓';color:var(--leaf-light);font-weight:700;flex-shrink:0}
+.service-price{color:var(--clay);font-size:.82rem;font-weight:600;margin-bottom:16px}
+.btn-service{
+  background:transparent;border:1.5px solid rgba(232,196,154,.3);color:var(--straw);
+  border-radius:var(--rs);padding:10px 18px;font-size:.84rem;font-weight:600;
+  width:100%;transition:all var(--tr)
+}
+.btn-service:hover,.service-card.featured .btn-service{background:var(--leaf-mid);border-color:var(--leaf-mid);color:#fff}
+
+/* ─── ABOUT ─── */
+#about{background:var(--parchment)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:40px}
+.about-photo-wrap{position:relative}
+.about-photo{
+  width:100%;aspect-ratio:4/5;background:linear-gradient(160deg,var(--leaf-pale),var(--straw));
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:80px;position:relative;overflow:hidden
+}
+.about-photo-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(30,17,8,.7));
+  padding:24px;border-radius:0 0 20px 20px
+}
+.about-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:#fff}
+.about-cred{font-size:.82rem;color:rgba(255,255,255,.8)}
+.about-badges{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.about-badge{
+  background:#fff;border:1px solid rgba(122,79,40,.12);border-radius:var(--rs);
+  padding:12px 16px;display:flex;align-items:center;gap:12px
+}
+.ab-icon{font-size:22px;flex-shrink:0}
+.ab-title{font-size:.84rem;font-weight:600;color:var(--earth)}
+.ab-sub{font-size:.75rem;color:var(--soil)}
+.about-content{}
+.about-headline{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:800;color:var(--earth);line-height:1.25;margin-bottom:16px}
+.about-bio{font-size:.95rem;color:#444;line-height:1.8;margin-bottom:20px}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.about-stat-card{background:#fff;border:1px solid rgba(122,79,40,.1);border-radius:var(--rm);padding:16px;text-align:center}
+.as-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--leaf-mid)}
+.as-lbl{font-size:.72rem;color:var(--soil);text-transform:uppercase;letter-spacing:.06em}
+.expert-quote{
+  background:var(--leaf-pale);border-left:4px solid var(--leaf-mid);border-radius:0 var(--rm) var(--rm) 0;
+  padding:16px 20px;font-style:italic;color:var(--leaf);font-size:.9rem;line-height:1.7;margin-bottom:24px
+}
+
+/* ─── CONTACT ─── */
+#contact{background:var(--cream)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:40px}
+.contact-info{}
+.contact-channels{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.channel-card{
+  background:#fff;border:1px solid rgba(122,79,40,.1);border-radius:var(--rm);
+  padding:16px 18px;display:flex;align-items:center;gap:14px;text-decoration:none;
+  transition:all var(--tr)
+}
+.channel-card:hover{border-color:var(--leaf-mid);box-shadow:var(--sh)}
+.channel-icon{font-size:26px;flex-shrink:0}
+.channel-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--soil);margin-bottom:3px}
+.channel-value{font-size:.95rem;font-weight:600;color:var(--earth)}
+.channel-card.wa-channel .channel-icon{color:var(--wa-light)}
+.service-areas{margin-top:20px}
+.sa-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--soil);margin-bottom:10px}
+.sa-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sa-tag{background:var(--leaf-pale);color:var(--leaf);font-size:.78rem;font-weight:500;padding:4px 12px;border-radius:10px}
+.contact-form{
+  background:#fff;border:1px solid rgba(122,79,40,.1);border-radius:20px;
+  padding:28px;box-shadow:var(--sh)
+}
+.form-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--earth);margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:.78rem;font-weight:600;color:var(--soil);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.form-input,.form-select,.form-textarea{
+  width:100%;border:1.5px solid rgba(122,79,40,.18);border-radius:var(--rs);
+  padding:10px 14px;font-size:.9rem;font-family:'DM Sans',sans-serif;
+  color:var(--earth);background:var(--cream);outline:none;
+  transition:border-color var(--tr)
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--leaf-mid)}
+.form-textarea{resize:vertical;min-height:100px}
+.btn-submit{
+  background:var(--leaf-mid);color:#fff;border:none;border-radius:var(--rm);
+  padding:13px 28px;font-size:.95rem;font-weight:600;width:100%;
+  transition:background var(--tr)
+}
+.btn-submit:hover{background:var(--leaf-light)}
+.form-note{font-size:.75rem;color:var(--soil);text-align:center;margin-top:10px}
+.form-success{
+  display:none;background:var(--leaf-pale);border:1.5px solid var(--leaf-mid);
+  border-radius:var(--rm);padding:20px;text-align:center
+}
+.form-success.show{display:block}
+.form-success-icon{font-size:36px;margin-bottom:8px}
+.form-success-text{font-size:.95rem;font-weight:600;color:var(--leaf);margin-bottom:4px}
+.form-success-sub{font-size:.82rem;color:var(--soil)}
+
+/* ─── DISEASE MODAL ─── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(30,17,8,.65);
+  z-index:1000;align-items:flex-start;justify-content:center;
+  padding:20px;overflow-y:auto;backdrop-filter:blur(4px)
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:#fff;border-radius:20px;width:100%;max-width:880px;
+  margin:auto;box-shadow:0 24px 80px rgba(0,0,0,.45);overflow:hidden;
+  animation:mIn .3s ease
+}
+@keyframes mIn{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.modal-hdr{
+  background:linear-gradient(135deg,var(--earth),var(--bark));
+  padding:28px 32px 22px;position:relative
+}
+.modal-close{
+  position:absolute;top:18px;right:18px;width:34px;height:34px;
+  background:rgba(255,255,255,.1);border:none;border-radius:50%;
+  color:var(--straw);font-size:17px;display:flex;align-items:center;justify-content:center
+}
+.modal-close:hover{background:rgba(255,255,255,.2)}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:800;color:var(--cream);margin-bottom:6px}
+.modal-pathogen{font-size:.84rem;color:var(--clay);font-style:italic;margin-bottom:12px}
+.modal-summary{color:var(--straw);font-size:.92rem;line-height:1.7;max-width:640px;opacity:.9}
+.modal-tabs{
+  background:var(--parchment);border-bottom:1px solid rgba(122,79,40,.12);
+  display:flex;overflow-x:auto;padding:0 20px;gap:0
+}
+.modal-tab{
+  background:none;border:none;border-bottom:3px solid transparent;
+  color:var(--soil);font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;
+  padding:13px 18px;white-space:nowrap;transition:all var(--tr)
+}
+.modal-tab:hover{color:var(--earth)}
+.modal-tab.active{color:var(--leaf-mid);border-bottom-color:var(--leaf-mid)}
+.modal-body{padding:28px 32px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.info-block{margin-bottom:26px}
+.info-block-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--soil);margin-bottom:10px;padding-left:12px;
+  border-left:3px solid var(--leaf-mid)
+}
+.info-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.info-list li{display:flex;align-items:flex-start;gap:9px;font-size:.9rem;color:#444;line-height:1.6}
+.info-list li::before{content:'▸';color:var(--leaf-mid);font-size:.72rem;flex-shrink:0;margin-top:5px}
+.expert-box{
+  background:var(--gold-pale);border:1px solid rgba(184,134,11,.2);
+  border-radius:var(--rm);padding:18px;margin-bottom:22px
+}
+.expert-box-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.expert-box-text{font-size:.9rem;color:#5C4210;line-height:1.7}
+.alert-box{
+  background:var(--alert-pale);border:1px solid rgba(168,50,16,.18);
+  border-radius:var(--rm);padding:16px 18px;margin-top:14px
+}
+.alert-box-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--alert);margin-bottom:7px}
+.faq-item{border:1px solid rgba(122,79,40,.12);border-radius:var(--rm);margin-bottom:8px;overflow:hidden}
+.faq-q{
+  width:100%;background:none;border:none;padding:13px 16px;
+  text-align:left;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;
+  color:var(--earth);display:flex;justify-content:space-between;align-items:center;gap:10px
+}
+.faq-q:hover{background:var(--cream)}
+.faq-toggle{font-size:18px;color:var(--leaf-mid);transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-toggle{transform:rotate(45deg)}
+.faq-a{display:none;padding:0 16px 14px;font-size:.87rem;color:#555;line-height:1.7;border-top:1px solid rgba(122,79,40,.07)}
+.faq-item.open .faq-a{display:block}
+.wa-reply-box{
+  background:#E8F5E9;border:1px solid #A5D6A7;border-radius:var(--rm);
+  padding:14px 18px;display:flex;align-items:flex-start;gap:12px;margin-bottom:20px
+}
+.wa-reply-icon{width:34px;height:34px;background:var(--wa-light);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0}
+.wa-reply-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#2E7D32;margin-bottom:4px}
+.wa-reply-text{font-size:.87rem;color:#1B5E20;line-height:1.6}
+.keywords-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px}
+.kw-tag{background:var(--cream);border:1px solid var(--straw);color:var(--bark);border-radius:7px;padding:3px 11px;font-size:.76rem;font-family:'DM Sans',sans-serif}
+.modal-wa-btn{
+  background:var(--wa-light);color:#fff;border:none;border-radius:var(--rs);
+  padding:11px 22px;font-size:.88rem;font-weight:600;width:100%;margin-top:16px;
+  display:flex;align-items:center;justify-content:center;gap:7px
+}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ─── FOOTER ─── */
+footer{background:var(--earth);color:rgba(232,196,154,.7);padding:48px 20px 28px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand{}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--straw);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.footer-tagline{font-size:.85rem;line-height:1.7;max-width:260px;margin-bottom:16px}
+.footer-contact-link{
+  display:flex;align-items:center;gap:8px;color:var(--clay);font-size:.85rem;
+  font-weight:500;margin-bottom:6px;text-decoration:none
+}
+.footer-contact-link:hover{color:var(--straw)}
+.footer-col-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--clay);margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:7px}
+.footer-links a{font-size:.85rem;color:rgba(232,196,154,.65);transition:color var(--tr)}
+.footer-links a:hover{color:var(--straw)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:.78rem;color:rgba(232,196,154,.45)}
+.footer-badge{background:rgba(45,106,45,.25);border:1px solid rgba(61,158,61,.3);color:#8FD48F;font-size:.7rem;font-weight:600;padding:4px 12px;border-radius:12px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:32px}
+  .hero-card{max-width:480px}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:768px){
+  .header-nav{display:none}
+  .hamburger{display:flex;align-items:center}
+  section{padding:48px 20px}
+  .hero{padding:52px 20px 48px}
+  .disease-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr}
+  .about-stats{grid-template-columns:repeat(3,1fr)}
+  .form-row{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .checker-options{grid-template-columns:1fr}
+  .modal{border-radius:14px}
+  .modal-hdr{padding:20px 20px 16px}
+  .modal-body{padding:20px}
+  .wa-sticky{bottom:80px}
+  .search-wrap input{width:160px}
+}
+</style>
+</head>
+<body class="en">
+
+<!-- WhatsApp Sticky -->
+<a class="wa-sticky" href="https://wa.me/919400000000?text=Hello%2C%20I%20need%20advice%20on%20my%20coconut%20farm" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  💬
+  <span class="wa-sticky-label">Chat on WhatsApp</span>
+</a>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">🌿</div>
+      <div class="logo-text">
+        AgriPath Kerala
+        <span class="logo-sub">Plantation Crop Disease Advisory</span>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="#symptom-checker" class="nav-link">Symptom Checker</a>
+      <a href="#diseases" class="nav-link">Disease Library</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btnMl" onclick="setLang('ml')">മ</button>
+      </div>
+      <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        Book Consultation
+      </button>
+    </nav>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#symptom-checker" onclick="closeMobileNav()">🔍 Symptom Checker</a>
+    <a href="#diseases" onclick="closeMobileNav()">🌿 Disease Library</a>
+    <a href="#services" onclick="closeMobileNav()">📋 Services</a>
+    <a href="#about" onclick="closeMobileNav()">👤 About Expert</a>
+    <a href="#contact" class="mobile-cta" onclick="closeMobileNav()">📞 Book Consultation</a>
+    <button onclick="setLang('ml');closeMobileNav()" style="color:var(--straw)">മലയാളം / Switch to Malayalam</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">🔬 ICAR-CPCRI Verified Knowledge</div>
+      <h1>
+        <span class="en-text">Protect Your <em>Coconut Farm</em><br>With Expert Advice</span>
+        <span class="ml-text">നിങ്ങളുടെ <em>തെങ്ങിൻ തോട്ടം</em><br>സംരക്ഷിക്കൂ</span>
+      </h1>
+      <p class="hero-desc en-text">Kerala's trusted plant pathology advisory service. Identify diseases from symptoms, get field-proven management strategies, and consult directly with a PhD expert.</p>
+      <p class="hero-desc ml-text">കേരളത്തിലെ വിശ്വസ്ത സസ്യ രോഗ ഉപദേശ സേവനം. രോഗലക്ഷണങ്ങൾ തിരിച്ചറിഞ്ഞ് ശരിയായ പ്രതിരോധ മാർഗ്ഗങ്ങൾ അറിയൂ.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('symptom-checker').scrollIntoView({behavior:'smooth'})">
+          🔍 <span class="en-text">Check My Plant Symptoms</span><span class="ml-text">രോഗലക്ഷണം പരിശോധിക്കൂ</span>
+        </button>
+        <a class="btn-outline" href="https://wa.me/919400000000?text=Hello%2C%20I%20need%20advice%20on%20my%20farm" target="_blank">
+          💬 <span class="en-text">WhatsApp Us</span><span class="ml-text">വാട്ട്സ്ആപ്പ് ചെയ്യൂ</span>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">10+</span>
+          <span class="hero-stat-lbl en-text">Diseases Covered</span>
+          <span class="hero-stat-lbl ml-text">രോഗങ്ങൾ</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">6+</span>
+          <span class="hero-stat-lbl en-text">Years Experience</span>
+          <span class="hero-stat-lbl ml-text">വർഷത്തെ പരിചയം</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">ICAR</span>
+          <span class="hero-stat-lbl en-text">Verified Sources</span>
+          <span class="hero-stat-lbl ml-text">അംഗീകൃത ഉറവിടം</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">
+        🌿 <span class="en-text">Common Diseases — Quick Access</span>
+        <span class="ml-text">പ്രധാന രോഗങ്ങൾ</span>
+      </div>
+      <div class="quick-disease-list">
+        <div class="quick-disease-item" onclick="openModal(0)">
+          <div class="qdi-icon">🥥</div>
+          <div>
+            <div class="qdi-name en-text">Root (Wilt) Disease</div>
+            <div class="qdi-name ml-text">വേര് ചീഞ്ഞഴുകൽ രോഗം</div>
+            <div class="qdi-type">Phytoplasma</div>
+          </div>
+          <div class="qdi-arr">›</div>
+        </div>
+        <div class="quick-disease-item" onclick="openModal(1)">
+          <div class="qdi-icon">🥥</div>
+          <div>
+            <div class="qdi-name en-text">Leaf Rot Disease</div>
+            <div class="qdi-name ml-text">ഇലചീഞ്ഞഴുകൽ രോഗം</div>
+            <div class="qdi-type">Fungal Complex</div>
+          </div>
+          <div class="qdi-arr">›</div>
+        </div>
+        <div class="quick-disease-item" style="opacity:.55;cursor:not-allowed">
+          <div class="qdi-icon">🥥</div>
+          <div>
+            <div class="qdi-name en-text">Bud Rot</div>
+            <div class="qdi-name ml-text">മൊട്ട് ചീഞ്ഞഴുകൽ</div>
+            <div class="qdi-type en-text">Coming soon</div>
+            <div class="qdi-type ml-text">ഉടൻ വരുന്നു</div>
+          </div>
+          <div class="qdi-arr">›</div>
+        </div>
+        <div class="quick-disease-item" style="opacity:.55;cursor:not-allowed">
+          <div class="qdi-icon">🍌</div>
+          <div>
+            <div class="qdi-name en-text">Panama Wilt</div>
+            <div class="qdi-name ml-text">പനാമ ഉലർ</div>
+            <div class="qdi-type en-text">Coming soon</div>
+            <div class="qdi-type ml-text">ഉടൻ വരുന്നു</div>
+          </div>
+          <div class="qdi-arr">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-strip-inner">
+    <div class="trust-item"><span class="trust-icon">🏛️</span><span class="en-text">ICAR-CPCRI Verified Content</span><span class="ml-text">ICAR-CPCRI അംഗീകൃത വിവരങ്ങൾ</span></div>
+    <div class="trust-item"><span class="trust-icon">🎓</span><span class="en-text">PhD Plant Pathology Expert</span><span class="ml-text">PhD സസ്യ രോഗ വിദഗ്ധൻ</span></div>
+    <div class="trust-item"><span class="trust-icon">📍</span><span class="en-text">Serving All 14 Kerala Districts</span><span class="ml-text">കേരളത്തിലെ 14 ജില്ലകളിലും</span></div>
+    <div class="trust-item"><span class="trust-icon">💬</span><span class="en-text">Malayalam & English Advisory</span><span class="ml-text">മലയാളം & ഇംഗ്ലീഷ് ഉപദേശം</span></div>
+  </div>
+</div>
+
+<!-- SYMPTOM CHECKER -->
+<section id="symptom-checker">
+  <div class="section-inner">
+    <div class="section-tag tag-green">🔍 <span class="en-text">Interactive Tool</span><span class="ml-text">ഉപകരണം</span></div>
+    <h2 class="section-title en-text">Find Your Disease<br>From What You See</h2>
+    <h2 class="section-title ml-text">കാണുന്ന ലക്ഷണം<br>അനുസരിച്ച് രോഗം കണ്ടെത്തൂ</h2>
+    <p class="section-sub en-text">Answer 3 simple questions about your plant's symptoms — no disease knowledge required.</p>
+    <p class="section-sub ml-text">3 ലളിതമായ ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകൂ — രോഗ ജ്ഞാനം ആവശ്യമില്ല.</p>
+    <div class="checker-wrap">
+      <div class="checker-progress"><div class="checker-progress-fill" id="checkerProgress" style="width:33%"></div></div>
+      <div id="checkerMain"></div>
+      <div class="checker-result" id="checkerResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DISEASE LIBRARY -->
+<section id="diseases">
+  <div class="section-inner">
+    <div class="section-tag tag-green">🌿 <span class="en-text">Disease Library</span><span class="ml-text">രോഗ ഗ്രന്ഥശാല</span></div>
+    <h2 class="section-title en-text">Coconut Disease Profiles</h2>
+    <h2 class="section-title ml-text">തെങ്ങ് രോഗ പ്രൊഫൈലുകൾ</h2>
+    <p class="section-sub en-text">Expert-reviewed profiles sourced from authenticated ICAR-CPCRI publications. Click any card to explore symptoms, management, FAQ and more.</p>
+    <p class="section-sub ml-text">ICAR-CPCRI പ്രസിദ്ധീകരണങ്ങളിൽ നിന്ന് ശേഖരിച്ച വിദഗ്ധ-അവലോകനം ചെയ്ത പ്രൊഫൈലുകൾ.</p>
+    <div class="filter-bar" style="margin-top:28px">
+      <button class="filter-chip active" data-f="all">All</button>
+      <button class="filter-chip" data-f="coconut">🥥 Coconut</button>
+      <button class="filter-chip" data-f="phytoplasma">Phytoplasma</button>
+      <button class="filter-chip" data-f="fungal">Fungal</button>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="diseaseSearch" placeholder="Search…">
+      </div>
+    </div>
+    <div class="disease-grid" id="diseaseGrid"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-tag tag-green">📋 <span class="en-text">Our Services</span><span class="ml-text">സേവനങ്ങൾ</span></div>
+    <h2 class="section-title en-text" style="color:var(--cream)">How We Can Help<br>Your Farm</h2>
+    <h2 class="section-title ml-text" style="color:var(--cream)">നിങ്ങളുടെ കൃഷിക്ക്<br>ഞങ്ങൾ എങ്ങനെ സഹായിക്കും</h2>
+    <p class="section-sub en-text">From a quick WhatsApp diagnosis to a full farm audit — we offer services tailored to individual farmers, collectives, and agri-businesses.</p>
+    <p class="section-sub ml-text">ഒരു ലളിതമായ WhatsApp ഉപദേശം മുതൽ പൂർണ്ണ കൃഷിത്തോട്ട ഓഡിറ്റ് വരെ.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">💬</div>
+        <div class="service-name en-text">WhatsApp Advisory</div>
+        <div class="service-name ml-text">WhatsApp ഉപദേശം</div>
+        <div class="service-desc en-text">Send a photo of your affected plant and get an expert response within 24 hours. Ideal for quick diagnoses.</div>
+        <div class="service-desc ml-text">ബാധിത സസ്യത്തിന്റെ ഫോട്ടോ അയക്കൂ — 24 മണിക്കൂറിനുള്ളിൽ വിദഗ്ധ മറുപടി ലഭിക്കും.</div>
+        <ul class="service-includes">
+          <li class="en-text">Photo-based symptom assessment</li>
+          <li class="en-text">Probable disease identification</li>
+          <li class="en-text">Immediate management steps</li>
+          <li class="ml-hide">Send photo in Malayalam or English</li>
+        </ul>
+        <div class="service-price en-text">₹ Contact for pricing</div>
+        <div class="service-price ml-text">₹ ഫോൺ ചെയ്ത് വില അറിയൂ</div>
+        <button class="btn-service" onclick="window.open('https://wa.me/919400000000','_blank')">
+          <span class="en-text">Start on WhatsApp →</span>
+          <span class="ml-text">WhatsApp ൽ ആരംഭിക്കൂ →</span>
+        </button>
+      </div>
+      <div class="service-card featured">
+        <div class="service-popular">Most Popular</div>
+        <div class="service-icon">📞</div>
+        <div class="service-name en-text">Online Consultation</div>
+        <div class="service-name ml-text">ഓൺലൈൻ കൺസൾട്ടേഷൻ</div>
+        <div class="service-desc en-text">A dedicated 45-minute video/phone session with our plant pathology expert. Full diagnosis, treatment plan, and follow-up.</div>
+        <div class="service-desc ml-text">45 മിനിറ്റ് ഫോൺ/വീഡിയോ സെഷൻ. പൂർണ്ണ രോഗ നിർണ്ണയം, ചികിൽസ, തുടർ നിരീക്ഷണം.</div>
+        <ul class="service-includes">
+          <li class="en-text">Detailed photo / video review</li>
+          <li class="en-text">Written management prescription</li>
+          <li class="en-text">Variety & input recommendations</li>
+          <li class="en-text">1 follow-up message included</li>
+        </ul>
+        <div class="service-price en-text">₹ Contact for pricing</div>
+        <div class="service-price ml-text">₹ ഫോൺ ചെയ്ത് വില അറിയൂ</div>
+        <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          <span class="en-text">Book a Session →</span>
+          <span class="ml-text">ഒരു സെഷൻ ബുക്ക് ചെയ്യൂ →</span>
+        </button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌾</div>
+        <div class="service-name en-text">Farm Visit & Audit</div>
+        <div class="service-name ml-text">ഫാം സന്ദർശനം & ഓഡിറ്റ്</div>
+        <div class="service-desc en-text">On-site visit to your farm for comprehensive assessment of disease incidence, soil health, and integrated management planning.</div>
+        <div class="service-desc ml-text">കൃഷിത്തോട്ടത്തിൽ നേരിട്ടുള്ള സന്ദർശനം — രോഗ ആഘാതം, മണ്ണ് ആരോഗ്യം, സമഗ്ര പ്രതിരോധ പദ്ധതി.</div>
+        <ul class="service-includes">
+          <li class="en-text">Field disease mapping</li>
+          <li class="en-text">Soil & nutritional assessment</li>
+          <li class="en-text">Written farm advisory report</li>
+          <li class="en-text">Available: Ernakulam to Trivandrum</li>
+        </ul>
+        <div class="service-price en-text">₹ Contact for pricing + travel</div>
+        <div class="service-price ml-text">₹ ഫോൺ ചെയ്ത് വില അറിയൂ</div>
+        <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          <span class="en-text">Enquire →</span>
+          <span class="ml-text">ഇപ്പോൾ ചോദിക്കൂ →</span>
+        </button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <div class="service-name en-text">Corporate & Cluster Advisory</div>
+        <div class="service-name ml-text">കോർപ്പറേറ്റ് ഉപദേശം</div>
+        <div class="service-desc en-text">Tailored advisory packages for agri-companies, farmer collectives (clusters), Krishi Bhavans, and government agencies.</div>
+        <div class="service-desc ml-text">കൃഷി കൂട്ടായ്മകൾ, കൃഷി ഭവനങ്ങൾ, കമ്പനികൾ — ഇവർക്കായുള്ള പ്രത്യേക സേവന പ്പാക്കേജ്.</div>
+        <ul class="service-includes">
+          <li class="en-text">Training workshops for farmers</li>
+          <li class="en-text">Bulk disease diagnosis</li>
+          <li class="en-text">Seasonal disease alert reports</li>
+          <li class="en-text">White-label advisory content</li>
+        </ul>
+        <div class="service-price en-text">₹ Custom quote on request</div>
+        <div class="service-price ml-text">₹ ഇഷ്ടാനുസൃത ഉദ്ധരണി</div>
+        <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          <span class="en-text">Get a Quote →</span>
+          <span class="ml-text">ഉദ്ധരണി ലഭിക്കൂ →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-tag tag-gold">👤 <span class="en-text">Expert Behind the Advice</span><span class="ml-text">വിദഗ്ദ്ധൻ</span></div>
+    <div class="about-grid">
+      <div class="about-photo-wrap">
+        <div class="about-photo">
+          🌿
+          <div class="about-photo-overlay">
+            <div class="about-name">Dr. [Your Name]</div>
+            <div class="about-cred en-text">PhD — Computer Science & AI/ML | Senior Data Scientist</div>
+            <div class="about-cred ml-text">PhD | മുതിർന്ന ഡാറ്റ ശാസ്ത്രജ്ഞൻ</div>
+          </div>
+        </div>
+        <div class="about-badges">
+          <div class="about-badge">
+            <div class="ab-icon">🏛️</div>
+            <div>
+              <div class="ab-title">ICAR-CPCRI Knowledge Partner</div>
+              <div class="ab-sub en-text">Sourcing from authenticated bulletins</div>
+              <div class="ab-sub ml-text">അംഗീകൃത ഉറവിടങ്ങൾ</div>
+            </div>
+          </div>
+          <div class="about-badge">
+            <div class="ab-icon">🎓</div>
+            <div>
+              <div class="ab-title en-text">6+ Years AI/ML Industry Experience</div>
+              <div class="ab-title ml-text">6+ വർഷം AI/ML പരിചയം</div>
+              <div class="ab-sub">Techversant Infotech</div>
+            </div>
+          </div>
+          <div class="about-badge">
+            <div class="ab-icon">🌾</div>
+            <div>
+              <div class="ab-title en-text">Kerala-Based Advisory</div>
+              <div class="ab-title ml-text">കേരള കേന്ദ്രീകൃത ഉപദേശം</div>
+              <div class="ab-sub en-text">Thiruvananthapuram, Kerala</div>
+              <div class="ab-sub ml-text">തിരുവനന്തപുരം, കേരളം</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-content">
+        <h2 class="about-headline en-text">Bringing Research-Grade<br>Knowledge to Every Farm</h2>
+        <h2 class="about-headline ml-text">ഗവേഷണ ജ്ഞാനം<br>ഓരോ കൃഷിക്കും</h2>
+        <p class="about-bio en-text">With a PhD in Computer Science and 6+ years building production-grade AI systems, I bridge the gap between ICAR's deep research knowledge and the practical realities of Kerala's coconut and plantation crop farmers. This knowledge base is built entirely from authenticated ICAR-CPCRI technical bulletins — not from generic internet sources.</p>
+        <p class="about-bio ml-text">Computer Science-ൽ PhD-യും 6+ വർഷം AI/ML-ൽ പ്രൊഫഷണൽ പരിചയവും ഉള്ള ഞാൻ, ICAR ഗവേഷണ ജ്ഞാനം കേരളത്തിലെ കർഷകരിലേക്ക് എത്തിക്കുന്നു. ഈ ജ്ഞാനകോശം ICAR-CPCRI-യുടെ ആധികാരിക ബുള്ളറ്റിനുകളിൽ നിന്ന് മാത്രം ശേഖരിച്ചതാണ്.</p>
+        <div class="expert-quote en-text">"Even in root wilt affected gardens, productivity of 150–200 nuts per palm per year has been demonstrated under improved management. The right knowledge makes the difference."</div>
+        <div class="expert-quote ml-text">"ശരിയായ ജ്ഞാനവും ഉചിതമായ പ്രതിരോധ മാർഗ്ഗങ്ങളും ഉപയോഗിച്ചാൽ, വേര് ചീഞ്ഞഴുകൽ ബാധിച്ച തോട്ടത്തിൽ പോലും ഒരു മരത്തിൽ നിന്ന് 150–200 നാളികേരം ലഭ്യമാകും."</div>
+        <div class="about-stats">
+          <div class="about-stat-card"><div class="as-num">10+</div><div class="as-lbl en-text">Diseases</div><div class="as-lbl ml-text">രോഗങ്ങൾ</div></div>
+          <div class="about-stat-card"><div class="as-num">4</div><div class="as-lbl en-text">ICAR Sources</div><div class="as-lbl ml-text">ICAR ഉറവിടം</div></div>
+          <div class="about-stat-card"><div class="as-num">2</div><div class="as-lbl en-text">Languages</div><div class="as-lbl ml-text">ഭാഷകൾ</div></div>
+        </div>
+        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          <span class="en-text">Book a Consultation</span>
+          <span class="ml-text">കൺസൾട്ടേഷൻ ബുക്ക് ചെയ്യൂ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag tag-sky">📞 <span class="en-text">Get in Touch</span><span class="ml-text">ബന്ധപ്പെടൂ</span></div>
+    <h2 class="section-title en-text">Talk to the Expert</h2>
+    <h2 class="section-title ml-text">വിദഗ്ധനോട് സംസാരിക്കൂ</h2>
+    <p class="section-sub en-text">Whether you're a farmer with a sick tree, an agronomist needing a second opinion, or a company seeking advisory services — we're here.</p>
+    <p class="section-sub ml-text">ഒരു കർഷകനായാലും, അഗ്രോണമിസ്റ്റായാലും, കമ്പനിയായാലും — ഞങ്ങൾ സഹായിക്കാൻ ഇവിടെ ഉണ്ട്.</p>
+    <div class="contact-grid" style="margin-top:36px">
+      <div class="contact-info">
+        <div class="contact-channels">
+          <a class="channel-card wa-channel" href="https://wa.me/919400000000" target="_blank">
+            <div class="channel-icon">💬</div>
+            <div>
+              <div class="channel-label en-text">WhatsApp (Fastest)</div>
+              <div class="channel-label ml-text">WhatsApp (ഏറ്റവും വേഗം)</div>
+              <div class="channel-value">+91 94000 00000</div>
+            </div>
+          </a>
+          <a class="channel-card" href="tel:+919400000000">
+            <div class="channel-icon">📞</div>
+            <div>
+              <div class="channel-label en-text">Phone Call</div>
+              <div class="channel-label ml-text">ഫോൺ</div>
+              <div class="channel-value">+91 94000 00000</div>
+            </div>
+          </a>
+          <a class="channel-card" href="mailto:info@agripathkerala.in">
+            <div class="channel-icon">📧</div>
+            <div>
+              <div class="channel-label">Email</div>
+              <div class="channel-value">info@agripathkerala.in</div>
+            </div>
+          </a>
+        </div>
+        <div class="service-areas">
+          <div class="sa-title en-text">Districts Served (Farm Visits)</div>
+          <div class="sa-title ml-text">ഫാം സന്ദർശനം ലഭ്യമായ ജില്ലകൾ</div>
+          <div class="sa-tags">
+            <span class="sa-tag">Thiruvananthapuram</span>
+            <span class="sa-tag">Kollam</span>
+            <span class="sa-tag">Pathanamthitta</span>
+            <span class="sa-tag">Alappuzha</span>
+            <span class="sa-tag">Kottayam</span>
+            <span class="sa-tag">Ernakulam</span>
+            <span class="sa-tag">Thrissur</span>
+            <span class="sa-tag">+ All Kerala (Online)</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form" id="contactFormWrap">
+        <div class="form-title en-text">📝 Send an Enquiry</div>
+        <div class="form-title ml-text">📝 ഒരു അന്വേഷണം അയക്കൂ</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label en-text">Your Name</label>
+            <label class="form-label ml-text">പേര്</label>
+            <input type="text" class="form-input" id="f-name" placeholder="e.g. Rajan Nair">
+          </div>
+          <div class="form-group">
+            <label class="form-label en-text">WhatsApp / Phone</label>
+            <label class="form-label ml-text">ഫോൺ / WhatsApp</label>
+            <input type="tel" class="form-input" id="f-phone" placeholder="+91 …">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label en-text">District</label>
+            <label class="form-label ml-text">ജില്ല</label>
+            <select class="form-select" id="f-district">
+              <option value="">Select district…</option>
+              <option>Thiruvananthapuram</option><option>Kollam</option>
+              <option>Pathanamthitta</option><option>Alappuzha</option>
+              <option>Kottayam</option><option>Idukki</option>
+              <option>Ernakulam</option><option>Thrissur</option>
+              <option>Palakkad</option><option>Malappuram</option>
+              <option>Kozhikode</option><option>Wayanad</option>
+              <option>Kannur</option><option>Kasaragod</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label en-text">Service Needed</label>
+            <label class="form-label ml-text">ആവശ്യം</label>
+            <select class="form-select" id="f-service">
+              <option value="">Select…</option>
+              <option value="whatsapp">WhatsApp Advisory</option>
+              <option value="online">Online Consultation</option>
+              <option value="visit">Farm Visit</option>
+              <option value="corporate">Corporate / Cluster</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label en-text">Describe Your Problem</label>
+          <label class="form-label ml-text">പ്രശ്നം വിവരിക്കൂ</label>
+          <textarea class="form-textarea" id="f-message" placeholder="e.g. My coconut leaves are curling inward, some nuts are falling early…"></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">
+          <span class="en-text">Send Enquiry →</span>
+          <span class="ml-text">അന്വേഷണം അയക്കൂ →</span>
+        </button>
+        <div class="form-note en-text">⏱ We respond within 24 hours. WhatsApp is faster.</div>
+        <div class="form-note ml-text">⏱ 24 മണിക്കൂറിനുള്ളിൽ മറുപടി. WhatsApp കൂടുതൽ വേഗം.</div>
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">✅</div>
+          <div class="form-success-text en-text">Enquiry received! We'll WhatsApp you shortly.</div>
+          <div class="form-success-text ml-text">അന്വേഷണം ലഭിച്ചു! ഞങ്ങൾ WhatsApp ചെയ്യും.</div>
+          <div class="form-success-sub en-text">Expect a reply within 24 hours.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">🌿 AgriPath Kerala</div>
+        <p class="footer-tagline en-text">Expert plant pathology advisory for coconut and plantation crop farmers across Kerala. ICAR-CPCRI verified knowledge.</p>
+        <p class="footer-tagline ml-text">കേരളത്തിലെ തെങ്ങ്, വാഴ കൃഷിക്കാർക്കായുള്ള ICAR-CPCRI അംഗീകൃത ഉപദേശ സേവനം.</p>
+        <a class="footer-contact-link" href="https://wa.me/919400000000" target="_blank">💬 +91 94000 00000</a>
+        <a class="footer-contact-link" href="mailto:info@agripathkerala.in">📧 info@agripathkerala.in</a>
+        <a class="footer-contact-link">📍 Thiruvananthapuram, Kerala</a>
+      </div>
+      <div>
+        <div class="footer-col-title en-text">Disease Library</div>
+        <div class="footer-col-title ml-text">രോഗ ഗ്രന്ഥശാല</div>
+        <ul class="footer-links">
+          <li><a href="#diseases">Root (Wilt) Disease</a></li>
+          <li><a href="#diseases">Leaf Rot Disease</a></li>
+          <li><a href="#diseases">Bud Rot (Coming soon)</a></li>
+          <li><a href="#diseases">Panama Wilt (Coming soon)</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title en-text">Services</div>
+        <div class="footer-col-title ml-text">സേവനങ്ങൾ</div>
+        <ul class="footer-links">
+          <li><a href="#services">WhatsApp Advisory</a></li>
+          <li><a href="#services">Online Consultation</a></li>
+          <li><a href="#services">Farm Visit & Audit</a></li>
+          <li><a href="#services">Corporate Advisory</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Tools</div>
+        <ul class="footer-links">
+          <li><a href="#symptom-checker">Symptom Checker</a></li>
+          <li><a href="#about">About the Expert</a></li>
+          <li><a href="#contact">Book Consultation</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy en-text">© 2025 AgriPath Kerala. Content sourced from ICAR-CPCRI Technical Bulletins. For educational use only — consult a qualified expert for farm-specific advice.</div>
+      <div class="footer-copy ml-text">© 2025 AgriPath Kerala. ഉള്ളടക്കം ICAR-CPCRI-ൽ നിന്ന്. വിദ്യാഭ്യാസ ആവശ്യത്തിന് മാത്രം.</div>
+      <div class="footer-badge">ICAR-CPCRI Verified</div>
+    </div>
+  </div>
+</footer>
+
+<!-- DISEASE MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <div class="modal-hdr">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="m-crop-tag"></div>
+      <h2 class="modal-title" id="m-title"></h2>
+      <p class="modal-pathogen" id="m-pathogen"></p>
+      <p class="modal-summary" id="m-summary"></p>
+    </div>
+    <div class="modal-tabs" id="modalTabs"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ─── LANGUAGE ─── */
+function setLang(lang){
+  document.body.className=lang;
+  document.getElementById('btnEn').classList.toggle('active',lang==='en');
+  document.getElementById('btnMl').classList.toggle('active',lang==='ml');
+  localStorage.setItem('agripath_lang',lang);
+}
+const savedLang=localStorage.getItem('agripath_lang');
+if(savedLang) setLang(savedLang);
+
+/* ─── MOBILE NAV ─── */
+document.getElementById('hamburgerBtn').addEventListener('click',()=>{
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+function closeMobileNav(){document.getElementById('mobileNav').classList.remove('open')}
+
+/* ─── DISEASE DATA ─── */
+const diseases=[
+  {
+    crop:'Coconut',disease_name:'Root (Wilt) Disease',ml_name:'വേര് ചീഞ്ഞഴുകൽ / കൊഴുവാതൽ രോഗം',
+    other_names:['Root Wilt','RWD','Coconut Palm Disease','Root Disease'],
+    pathogen:'Phytoplasma — Candidatus Phytoplasma oryzae-related (RYD group, 16SrXI-B)',
+    disease_type:'phytoplasma',
+    affected_stage:['Young seedlings','Pre-bearing palms','Mature bearing palms','All age groups'],
+    main_symptoms:[
+      "Leaflets bend inward abnormally — 'flaccidity' or 'ribbing' — the key diagnostic sign",
+      'Yellowing of outer leaves from tips and margins inward',
+      'Marginal browning and drying (necrosis) of leaflets',
+      'Premature shedding of immature nuts and flower buttons',
+      'Rotting and deterioration of roots',
+      'Drying up of unopened flower sheaths (spathes)',
+      'Poor quality husk, kernel, and oil in affected nuts'
+    ],
+    ml_symptoms:[
+      'ഇലക്കഷ്ണങ്ങൾ ഉള്ളിലേക്ക് വളഞ്ഞ് "ഞാറ്" ഉണ്ടാകുന്നു — ഏറ്റവും പ്രധാന ലക്ഷണം',
+      'പുറം ഇലകൾ മഞ്ഞളിക്കുന്നു',
+      'ഇലത്തുമ്പ് തവിടുപൊടിഞ്ഞ് ഉണങ്ങുന്നു',
+      'കായ്കൾ അകാലത്തിൽ കൊഴിഞ്ഞുവീഴുന്നു',
+      'വേരുകൾ ചീഞ്ഞഴുകുന്നു',
+      'ഒലിമ്പ് ഉണ്ടാകാതെ ഉണങ്ങുന്നു'
+    ],
+    field_tips:[
+      "Inward curling of leaflets (flaccidity) is the hallmark — unlike yellowing from nutrients",
+      'Yellowing progresses from outer to inner whorls over time',
+      'Diseased palms often stand surrounded by apparently healthy palms',
+      'Does not respond to fertilizer alone — key differentiator from nutrient stress',
+      'Premature nut fall is a warning sign'
+    ],
+    favourable:['Endemic across eight southern districts of Kerala','Erratic spread, occurs in jumps irrespective of soil type','Waterlogged or poorly drained soils worsen progression','Presence of lace bug and planthopper vectors'],
+    spread:['Lace bug (Stephanitis typica) — confirmed insect vector','Planthopper (Proutista moesta) — confirmed insect vector','Aerial spread up to 1–4 km per year in jump pattern','Moving seedlings from diseased areas to disease-free zones'],
+    prevention:['Use certified ELISA-tested disease-free seedlings only','Plant resistant varieties: Kalpasree, Kalparaksha, Kalpa Sankara hybrid','Never bring seedlings from disease-affected areas','Remove and destroy diseased palms promptly','Ensure proper drainage'],
+    cultural:['Remove disease-advanced palms immediately','Replant with Kalpasree, Kalparaksha, or Kalpa Sankara hybrid','25 kg FYM or 10 kg vermicompost + Trichoderma harzianum per palm per year','Grow cowpea or Pueraria in palm basins — incorporate before flowering','NPK based on soil test: general 500g N, 300g P₂O₅, 1250g K₂O, 250g MgSO₄ in two splits','Apply 1 kg dolomite per palm per year for soil pH correction','Irrigate at 250 L per palm per week during summer'],
+    biological:['Bio-prime seedlings with Pseudomonas fluorescens (talc-based) at 4, 7, 10 months after sowing','Dip seedling roots in P. fluorescens slurry at main field planting','T. harzianum-enriched neem cake in coastal sandy soil regions'],
+    chemical:['No chemical cure exists for root wilt phytoplasma itself','Manage associated Leaf Rot Disease with hexaconazole 5 EC around spindle base','Insecticide sprays can reduce vector populations but do not prevent transmission','Consult a qualified plant pathology expert for specific treatment recommendations'],
+    expert_when:['When 20–30%+ of palms in a garden show flaccidity symptoms','When juvenile palms show symptoms within 1–2 years of planting','When disease spreads rapidly to previously unaffected gardens','Before replanting — for variety suitability and ELISA-tested seedlings'],
+    faq:[
+      {q:'Is root wilt curable?',a:'Root wilt has no direct chemical cure as it is caused by a phytoplasma organism. Proper nutrition, removing heavily diseased palms, controlling leaf rot, and planting resistant varieties help manage it. Mildly affected palms under good management can still give reasonable yields.'},
+      {q:'Which varieties are safe to plant in a root wilt area?',a:'Kalpasree (Chowghat Green Dwarf), Kalparaksha (Malayan Green Dwarf), and Kalpa Sankara hybrid (CGD x WCT) have been officially released for planting in root wilt endemic areas by the Central Variety Release Committee.'},
+      {q:'Can I move seedlings from my diseased farm to a disease-free area?',a:'No. Moving seedlings spreads both the phytoplasma pathogen and the insect vectors. This is strictly not recommended.'},
+      {q:'Why do some palms remain healthy in a badly affected garden?',a:'Some palms have naturally higher tolerance. Do not cut them — if they are high-yielding and disease-free, they are valuable mother palms for seed nut collection.'},
+      {q:'Will more fertilizer cure the disease?',a:'Fertilizers do not cure root wilt. However, good nutrition keeps affected palms stronger and improves yield. Fertilizer is a supportive practice, not a treatment.'}
+    ],
+    expert_note:"Root wilt is slow, debilitating, and non-lethal. Even in affected gardens, productivity of 150–200 nuts per palm per year has been demonstrated under improved management. ELISA testing of spindle leaf samples — possible 24 months before visible symptoms — is a powerful early detection tool.",
+    website_summary:'Root (Wilt) Disease is a serious phytoplasma disease endemic in eight southern districts of Kerala, causing progressive decline in coconut productivity. Characterized by inward bending of leaflets, yellowing, and premature nut drop, it is spread by insect vectors. Integrated management through resistant varieties, good nutrition, and organic practices significantly reduces losses.',
+    whatsapp_short:'Root Wilt (Phytoplasma): Key sign = inward bending of leaflets. No direct cure. Use resistant varieties (Kalpasree/Kalparaksha), remove diseased palms, improve soil nutrition, control leaf rot. Contact us for ELISA testing.',
+    seo_keywords:['coconut root wilt disease Kerala','phytoplasma coconut disease','coconut flaccidity disease','Kalpasree Kalparaksha resistant variety','ICAR CPCRI root wilt Kerala'],
+    review_status:'approved'
+  },
+  {
+    crop:'Coconut',disease_name:'Leaf Rot Disease',ml_name:'ഇലചീഞ്ഞഴുകൽ / ലീഫ് റോട്ട് രോഗം',
+    other_names:['LRD','Spindle Rot','Crown Rot'],
+    pathogen:'Fungal complex — primary: Colletotrichum gloeosporioides & Exserohilum rostratum',
+    disease_type:'fungal',
+    affected_stage:['All age groups','Palms below 25 years especially','Bearing palms','Young seedlings'],
+    main_symptoms:[
+      'Water-soaked brown lesions on the emerging spindle (youngest rolled leaf)',
+      'Lesions enlarge and merge, causing extensive rotting of the spindle',
+      'Rotten spindle tips stick together and fail to open — characteristic sign',
+      'Mold growth (mycelium, spore masses) visible on rotting surface',
+      'Blackening and shrivelling of leaf midribs and leaflet tips',
+      'Foul smell from rotting spindle tissue'
+    ],
+    ml_symptoms:[
+      'ഏറ്റവും ചെറിയ ഇലയിൽ (സ്പിൻഡിൽ) ഈർപ്പമുള്ള തവിട്ടുനിറ പൊട്ടുകൾ',
+      'പൊട്ടുകൾ വ്യാപിച്ച് ഇല മൊത്തം ചീഞ്ഞഴുകുന്നു',
+      'ചീഞ്ഞ ഇലത്തുമ്പ് ഒട്ടിക്കൂടി തുറക്കാതാകുന്നു — പ്രത്യേക ലക്ഷണം',
+      'ഇലയിൽ കൂൺ ആണ്ടുകൂടുന്നത് കാണാം',
+      'ഇലക്കമ്പ് കറുത്ത് ഉണങ്ങുന്നു',
+      'ദുർഗന്ധം'
+    ],
+    field_tips:[
+      "Crown center check: if the spindle is brown, rotting, or stuck-shut — suspect leaf rot",
+      'Tips sticking at the top while base is open is a classic visual sign',
+      'Occurs almost exclusively on Root Wilt-weakened palms',
+      'Most active during monsoon (June–September)',
+      'In young palms, entire spindle may decay leaving a dead crown center'
+    ],
+    favourable:['High humidity and low temperatures — peak during monsoon (June–September)','Free moisture from rain and morning dew on leaf surfaces','Root Wilt Disease weakening the palm\'s natural defenses','Nutritional stress and poor drainage'],
+    spread:['Windborne fungal spores — Colletotrichum peaks in atmosphere during monsoon','Rain splash disperses spores from infected to healthy spindles','Infected leaf debris on the ground harbors spores for re-infection'],
+    prevention:['Maintain palm health through balanced fertilization, drainage, and summer irrigation','Crown cleaning before monsoon — remove dead and heavily infected leaves','Control Root Wilt Disease to reduce susceptibility','Avoid injuries that provide entry points for fungi'],
+    cultural:['Cut and remove only the leaf rot-affected portions of spindle and top two open leaves — not healthy leaves','Burn all removed infected material — do not compost','Apply balanced NPK fertilizers and organic manures','Irrigate during summer to prevent nutritional stress','Clean the crown annually before monsoon as routine prophylaxis'],
+    biological:['Pseudomonas fluorescens (talc-based, 50g in 500 ml water per palm) — preventive and curative','Bacillus subtilis (talc-based) — individually or as consortium with P. fluorescens','Antagonistic bacteria from coconut rhizosphere inhibit key pathogens — research ongoing'],
+    chemical:['Hexaconazole 5 EC — broad-spectrum systemic fungicide; dispensed around spindle base (into leaf axil well)','Sequential spraying: Bordeaux mixture 1% → Dithane M-45 0.3% → Fytolan 0.5%','Prophylactic treatment during April–May and October–November recommended in endemic areas','Consult a qualified plant pathology expert for specific treatment dosages'],
+    expert_when:['When spindle is completely rotted and crown shows collapse','When leaf rot recurs repeatedly on the same palm despite treatment','When multiple whorls of the crown are all affected','When more than 50% of palms in a garden show leaf rot symptoms'],
+    faq:[
+      {q:'Does leaf rot kill the coconut palm?',a:'Leaf rot itself is not directly fatal, but it seriously reduces photosynthesis and nut yield. Combined with Root Wilt Disease — which occurs in over 99% of leaf rot cases — the palm\'s health declines rapidly. Early management is critical.'},
+      {q:'Why does my palm get leaf rot every rainy season?',a:'Leaf rot is strongly triggered by high humidity during the monsoon. Fungal spores multiply rapidly and infect the soft emerging spindle. Routine preventive treatment before the monsoon and good palm nutrition breaks this cycle.'},
+      {q:'Should I remove the entire rotted leaf?',a:'No. Remove only the affected portions of the spindle and the two topmost diseased open leaves. Removing healthy leaves reduces photosynthesis and recovery ability. Burn all removed material.'},
+      {q:'Can bio-products replace fungicide for leaf rot?',a:'Yes. Pseudomonas fluorescens and Bacillus subtilis-based talc preparations are effective and recommended by ICAR-CPCRI. They can be used as both preventive and curative treatments, especially when integrated with phytosanitation.'},
+      {q:'When should I treat — before or after rain?',a:'Preventive treatment in April–May (before monsoon) and October–November (after monsoon) is ideal. During the monsoon itself (June–September), curative action is needed if symptoms appear. Do not wait.'}
+    ],
+    expert_note:"Leaf rot disease management is critical in root wilt endemic areas. Studies show that even when root wilt cannot be cured, aggressive leaf rot management through phytosanitation, nutrition, and timely bioagent or fungicide application moves palms from 'disease advanced' to 'apparently healthy' categories. The B:C ratio improves from 1.03 to 1.77 with the full management package.",
+    website_summary:'Coconut Leaf Rot Disease is a fungal complex attacking the emerging spindle leaf, causing rotting, crown damage, and yield loss. It is closely linked with Root (Wilt) Disease — the weakened palm becomes highly susceptible to fungal attack. Timely phytosanitation, appropriate fungicide or bioagent application, and good nutritional management effectively control this disease.',
+    whatsapp_short:'Leaf Rot (Fungal): Rotting spindle, brown lesions, sticky leaf tips. Cut affected portions only, apply hexaconazole or P. fluorescens at spindle base. Prevent with pre-monsoon treatment (April–May). Call us for guidance.',
+    seo_keywords:['coconut leaf rot disease Kerala','spindle rot coconut','Colletotrichum coconut disease','hexaconazole coconut','Pseudomonas fluorescens coconut Kerala'],
+    review_status:'approved'
+  }
+];
+
+/* ─── SYMPTOM CHECKER ─── */
+const checkerSteps=[
+  {
+    id:'crop',
+    q:'Which crop is affected?',
+    ml_q:'ഏത് വിള ബാധിക്കപ്പെട്ടു?',
+    options:[
+      {icon:'🥥',label:'Coconut',ml_label:'തെങ്ങ്',sub:'Cocos nucifera',val:'coconut'},
+      {icon:'🍌',label:'Banana',ml_label:'വാഴ',sub:'Musa spp.',val:'banana'},
+      {icon:'🌿',label:'Black Pepper',ml_label:'കുരുമുളക്',sub:'Piper nigrum',val:'pepper'},
+      {icon:'🌰',label:'Arecanut',ml_label:'അടക്ക',sub:'Areca catechu',val:'areca'}
+    ]
+  },
+  {
+    id:'main_symptom',
+    q:'What is the most visible symptom?',
+    ml_q:'ഏറ്റവും പ്രകടമായ ലക്ഷണം ഏതാണ്?',
+    options:[
+      {icon:'🍂',label:'Leaf yellowing or browning',ml_label:'ഇല മഞ്ഞളിക്കൽ / തവിടുനിറം',sub:'Discoloration of leaves',val:'yellow'},
+      {icon:'🔄',label:'Leaves curling or bending inward',ml_label:'ഇല ഉള്ളിലേക്ക് വളഞ്ഞ് "ഞാറ്"',sub:'Abnormal leaf shape',val:'curl'},
+      {icon:'💧',label:'Rotting or wet lesions on leaves',ml_label:'ഇലകൾ ചീഞ്ഞഴുകുന്നു',sub:'Fungal rot symptoms',val:'rot'},
+      {icon:'🥥',label:'Nuts / fruits falling or not forming',ml_label:'കായ് കൊഴിഞ്ഞ് വീഴൽ',sub:'Yield or fruiting problem',val:'nut'},
+      {icon:'🌿',label:'Crown / top growth dying or stunted',ml_label:'മൊട്ട് / നിൽ ചിഗുര് ഉണങ്ങൽ',sub:'Growing point damage',val:'crown'}
+    ]
+  },
+  {
+    id:'secondary',
+    q:'Any additional symptoms you notice?',
+    ml_q:'മറ്റ് ലക്ഷണങ്ങൾ ഉണ്ടോ?',
+    options:[
+      {icon:'🌧️',label:'Worst during or after rain / monsoon',ml_label:'മഴക്കാലത്ത് കൂടുതൽ',sub:'Weather-linked',val:'monsoon'},
+      {icon:'🐛',label:'Insects visible on leaves',ml_label:'ഇലകളിൽ പ്രാണികൾ',sub:'Vector insects present',val:'insects'},
+      {icon:'💊',label:'Fertilizer had no effect',ml_label:'വളം ഇട്ടിട്ടും ഫലമില്ല',sub:'Fertilizer non-responsive',val:'nofertilizer'},
+      {icon:'🏥',label:'Neighboring palms also affected',ml_label:'അടുത്ത മരങ്ങളും ബാധിക്കപ്പെട്ടു',sub:'Spreading pattern',val:'spread'},
+      {icon:'❓',label:'None of these / not sure',ml_label:'ഒന്നും ഇല്ല / അറിയില്ല',sub:'',val:'unsure'}
+    ]
+  }
+];
+
+let checkerState={step:0,answers:{}};
+
+function buildChecker(){
+  const isMl=document.body.classList.contains('ml');
+  const step=checkerSteps[checkerState.step];
+  const prog=Math.round(((checkerState.step)/checkerSteps.length)*100);
+  document.getElementById('checkerProgress').style.width=(prog+33)+'%';
+  const main=document.getElementById('checkerMain');
+  const result=document.getElementById('checkerResult');
+  result.classList.remove('show');result.style.display='none';
+  main.innerHTML=`
+    <div class="checker-header">
+      <span class="checker-step-badge">${isMl?'ചോദ്യം':'Step'} ${checkerState.step+1} / ${checkerSteps.length}</span>
+      <div class="checker-q">${isMl?step.ml_q:step.q}</div>
+    </div>
+    <div class="checker-body">
+      <div class="checker-options">
+        ${step.options.map(o=>`
+          <button class="checker-option ${checkerState.answers[step.id]===o.val?'selected':''}"
+            onclick="selectOption('${step.id}','${o.val}',this)">
+            <div class="co-icon">${o.icon}</div>
+            <div>
+              <div class="co-label">${isMl?o.ml_label:o.label}</div>
+              ${o.sub?`<div class="co-sub">${o.sub}</div>`:''}
+            </div>
+          </button>`).join('')}
+      </div>
+      <div class="checker-nav">
+        <button class="btn-checker-back" onclick="checkerBack()" ${checkerState.step===0?'style="visibility:hidden"':''}>
+          ← ${isMl?'മടങ്ങൂ':'Back'}
+        </button>
+        <button class="btn-checker-next" id="checkerNextBtn"
+          onclick="checkerNext()"
+          ${checkerState.answers[step.id]?'':'disabled'}>
+          ${checkerState.step===checkerSteps.length-1?(isMl?'ഫലം കാണൂ':'See Result →'):(isMl?'അടുത്തത്':'Next →')}
+        </button>
+      </div>
+    </div>`;
+}
+
+function selectOption(stepId,val,el){
+  checkerState.answers[stepId]=val;
+  document.querySelectorAll('.checker-option').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('checkerNextBtn').disabled=false;
+}
+
+function checkerNext(){
+  if(checkerState.step<checkerSteps.length-1){
+    checkerState.step++;
+    buildChecker();
+  } else {
+    showCheckerResult();
+  }
+}
+
+function checkerBack(){
+  if(checkerState.step>0){checkerState.step--;buildChecker();}
+}
+
+function showCheckerResult(){
+  const isMl=document.body.classList.contains('ml');
+  const a=checkerState.answers;
+  let match=null,confidence=60,matchedSymptoms=[];
+
+  if(a.crop==='coconut'&&a.main_symptom==='curl'){
+    match=diseases[0];confidence=92;
+    matchedSymptoms=[isMl?'ഇല ഉള്ളിലേക്ക് വളഞ്ഞ്':'Leaflets curling inward (flaccidity)',
+      isMl?'ഫലം ഇല്ലാതെ':'Fertilizer non-responsive'];
+    if(a.secondary==='nofertilizer')confidence=97;
+    if(a.secondary==='insects')confidence=95;
+  } else if(a.crop==='coconut'&&a.main_symptom==='rot'){
+    match=diseases[1];confidence=88;
+    matchedSymptoms=[isMl?'ഇല ചീഞ്ഞഴുകൽ':'Leaf rotting / wet lesions',
+      isMl?'മഴക്കാലത്ത്':'Monsoon season'];
+    if(a.secondary==='monsoon')confidence=94;
+  } else if(a.crop==='coconut'&&a.main_symptom==='yellow'){
+    match=diseases[0];confidence=65;
+    matchedSymptoms=[isMl?'ഇല മഞ്ഞളിക്കൽ':'Leaf yellowing'];
+    if(a.secondary==='spread')confidence=72;
+  } else if(a.crop==='coconut'&&a.main_symptom==='nut'){
+    match=diseases[0];confidence=68;
+    matchedSymptoms=[isMl?'കായ് കൊഴിഞ്ഞ് വീഴൽ':'Nut shedding'];
+  }
+
+  document.getElementById('checkerProgress').style.width='100%';
+  document.getElementById('checkerMain').style.display='none';
+
+  const result=document.getElementById('checkerResult');
+  result.style.display='block';
+
+  if(!match){
+    result.innerHTML=`
+      <div style="padding:28px;text-align:center">
+        <div style="font-size:40px;margin-bottom:12px">🔍</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--earth);margin-bottom:10px">
+          ${isMl?'ഡാറ്റാബേസ് വിപുലപ്പെടുത്തുന്നു':'More data needed'}
+        </div>
+        <p style="font-size:.88rem;color:#555;line-height:1.7;margin-bottom:20px">
+          ${isMl?'ഈ ലക്ഷണ സംയോജനം ഇതുവരെ ഞങ്ങളുടെ ഡാറ്റാബേസിൽ ഇല്ല. ദയവായി ഒരു വിദഗ്ധനോട് നേരിട്ട് ബന്ധപ്പെടൂ.':
+          'This symptom combination isn\'t in our current database. Please consult directly — our expert can help diagnose via WhatsApp photo.'}
+        </p>
+        <a href="https://wa.me/919400000000" target="_blank" class="btn-result-wa" style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--wa-light);color:#fff;border:none;border-radius:var(--rs);font-size:.88rem;font-weight:600">
+          💬 ${isMl?'WhatsApp ൽ ചോദിക്കൂ':'Ask on WhatsApp'}
+        </a>
+        <button class="btn-checker-restart" onclick="restartChecker()">${isMl?'വീണ്ടും ശ്രമിക്കൂ':'Try Again'}</button>
+      </div>`;
+    result.classList.add('show');return;
+  }
+
+  result.innerHTML=`
+    <div class="result-card">
+      <div class="result-match">${isMl?'ഏറ്റവും ഒത്ത് വരുന്ന രോഗം':'Best match found'}</div>
+      <div class="result-name">${isMl?match.ml_name:match.disease_name}</div>
+      <div class="result-confidence">
+        <div class="conf-bar"><div class="conf-fill" style="width:${confidence}%"></div></div>
+        <span class="conf-text">${confidence}% ${isMl?'സംഭാവ്യത':'match confidence'}</span>
+      </div>
+      <div class="result-symptoms-matched">
+        <div class="rsm-title">${isMl?'ഒത്ത ലക്ഷണങ്ങൾ':'Symptoms matched'}</div>
+        <div class="rsm-tags">${matchedSymptoms.map(s=>`<span class="rsm-tag">✓ ${s}</span>`).join('')}</div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-result-detail" onclick="openModal(${diseases.indexOf(match)})">
+          ${isMl?'പൂർണ്ണ വിവരം കാണൂ →':'View Full Disease Profile →'}
+        </button>
+        <a href="https://wa.me/919400000000?text=Hello%2C+I+used+the+symptom+checker+and+got+${encodeURIComponent(match.disease_name)}+as+a+match.+Please+help+confirm." target="_blank" class="btn-result-wa">
+          💬 ${isMl?'വിദഗ്ധൻ ഉറപ്പ് നൽകട്ടെ':'Confirm with Expert'}
+        </a>
+      </div>
+    </div>
+    <p style="font-size:.8rem;color:var(--soil);margin-top:10px">
+      ${isMl?'⚠️ ഈ ഉദ്ദേശ്യം മാത്രം. ഒരു വിദഗ്ധൻ നേരിട്ട് ഉറപ്പ് നൽകണം.':'⚠️ This is a screening tool only, not a clinical diagnosis. Confirm with a plant pathology expert before treatment.'}
+    </p>
+    <button class="btn-checker-restart" onclick="restartChecker()">
+      ${isMl?'വീണ്ടും ശ്രമിക്കൂ':'Check another plant →'}
+    </button>`;
+  result.classList.add('show');
+}
+
+function restartChecker(){
+  checkerState={step:0,answers:{}};
+  document.getElementById('checkerMain').style.display='';
+  document.getElementById('checkerResult').classList.remove('show');
+  document.getElementById('checkerResult').style.display='none';
+  buildChecker();
+}
+
+buildChecker();
+
+/* ─── DISEASE CARDS ─── */
+function typeClass(t){
+  if(t==='phytoplasma')return'dt-phytoplasma';
+  if(t==='fungal')return'dt-fungal';
+  return'dt-viral';
+}
+function typeLabel(t){
+  if(t==='phytoplasma')return'Phytoplasma';
+  if(t==='fungal')return'Fungal';
+  return'Viral';
+}
+function renderCards(list){
+  const isMl=document.body.classList.contains('ml');
+  const grid=document.getElementById('diseaseGrid');
+  if(!list.length){grid.innerHTML='<p style="color:var(--soil);padding:20px">No diseases found.</p>';return;}
+  grid.innerHTML=list.map((d,ri)=>`
+    <article class="disease-card" onclick="openModal(${diseases.indexOf(d)})">
+      <div class="dc-header">
+        <div class="dc-badges">
+          <span class="crop-tag ct-${d.crop.toLowerCase()}">${d.crop==='Coconut'?'🥥':'🍌'} ${d.crop}</span>
+          <span class="disease-type-tag ${typeClass(d.disease_type)}">${typeLabel(d.disease_type)}</span>
+        </div>
+        <h3 class="dc-title">${isMl?d.ml_name:d.disease_name}</h3>
+        <p class="dc-pathogen">${d.pathogen.split('—')[0].trim()}</p>
+      </div>
+      <div class="dc-body">
+        <p class="dc-summary">${d.website_summary.substring(0,150)}…</p>
+        <div class="dc-symptoms-label">${isMl?'പ്രധാന ലക്ഷണങ്ങൾ':'Key Symptoms'}</div>
+        <div class="dc-symptom-tags">
+          ${(isMl?d.ml_symptoms:d.main_symptoms).slice(0,3).map(s=>`<span class="dc-symptom-tag">${s.split('—')[0].split('—')[0].substring(0,40)}</span>`).join('')}
+        </div>
+      </div>
+      <div class="dc-footer">
+        <div class="dc-status"><div class="dc-status-dot ${d.review_status}"></div>${d.review_status==='approved'?(isMl?'വിദഗ്ദ്ധ അംഗീകൃതം':'Expert Reviewed'):(isMl?'അവലോകനം ബാക്കി':'Pending Review')}</div>
+        <button class="btn-card-view">${isMl?'വിവരം കാണൂ →':'View Profile →'}</button>
+      </div>
+    </article>`).join('');
+}
+
+renderCards(diseases);
+
+document.querySelectorAll('.filter-chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    filterCards(c.dataset.f,document.getElementById('diseaseSearch').value.toLowerCase());
+  });
+});
+document.getElementById('diseaseSearch').addEventListener('input',e=>{
+  const f=document.querySelector('.filter-chip.active')?.dataset.f||'all';
+  filterCards(f,e.target.value.toLowerCase());
+});
+function filterCards(f,s){
+  let list=diseases;
+  if(f==='coconut')list=list.filter(d=>d.crop.toLowerCase()==='coconut');
+  if(f==='phytoplasma')list=list.filter(d=>d.disease_type==='phytoplasma');
+  if(f==='fungal')list=list.filter(d=>d.disease_type==='fungal');
+  if(s)list=list.filter(d=>d.disease_name.toLowerCase().includes(s)||d.ml_name.includes(s)||(d.other_names||[]).some(n=>n.toLowerCase().includes(s)));
+  renderCards(list);
+}
+
+/* ─── MODAL ─── */
+function openModal(idx){
+  const d=diseases[idx];
+  const isMl=document.body.classList.contains('ml');
+  const ov=document.getElementById('modalOverlay');
+  document.getElementById('m-crop-tag').innerHTML=`<div class="section-tag tag-green" style="margin-bottom:10px">${d.crop==='Coconut'?'🥥':'🍌'} ${d.crop}</div>`;
+  document.getElementById('m-title').textContent=isMl?d.ml_name:d.disease_name;
+  document.getElementById('m-pathogen').textContent=`Causal agent: ${d.pathogen}`;
+  document.getElementById('m-summary').textContent=d.website_summary;
+
+  const tabs=[
+    {id:'ov',label:isMl?'📋 അവലോകനം':'📋 Overview'},
+    {id:'sym',label:isMl?'🔬 ലക്ഷണങ്ങൾ':'🔬 Symptoms'},
+    {id:'mgmt',label:isMl?'🌿 പ്രതിരോധം':'🌿 Management'},
+    {id:'faq',label:'❓ FAQ'},
+    {id:'adv',label:isMl?'📱 ഉപദേശം':'📱 Advisory'}
+  ];
+  document.getElementById('modalTabs').innerHTML=tabs.map((t,i)=>`<button class="modal-tab ${i===0?'active':''}" data-tab="${t.id}" onclick="switchTab(this,'${t.id}')">${t.label}</button>`).join('');
+
+  const ml=s=>`<ul class="info-list">${s.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+
+  document.getElementById('modalBody').innerHTML=`
+    <div class="tab-panel active" id="tp-ov">
+      <div class="two-col">
+        <div class="info-block"><div class="info-block-label">${isMl?'മറ്റ് പേരുകൾ':'Other Names'}</div>${ml(d.other_names)}</div>
+        <div class="info-block"><div class="info-block-label">${isMl?'ബാധിക്കുന്ന ഘട്ടം':'Affected Stage'}</div>${ml(d.affected_stage)}</div>
+      </div>
+      <div class="info-block"><div class="info-block-label">${isMl?'അനുകൂല സാഹചര്യം':'Favourable Conditions'}</div>${ml(d.favourable)}</div>
+      <div class="info-block"><div class="info-block-label">${isMl?'പ്രസരണ മാർഗ്ഗം':'Mode of Spread'}</div>${ml(d.spread)}</div>
+      <div class="expert-box"><div class="expert-box-label">⭐ ${isMl?'വിദഗ്ദ്ധ കുറിപ്പ്':'Expert Field Note'}</div><div class="expert-box-text">${d.expert_note}</div></div>
+    </div>
+    <div class="tab-panel" id="tp-sym">
+      <div class="info-block"><div class="info-block-label">${isMl?'പ്രധാന ലക്ഷണങ്ങൾ':'Main Symptoms'}</div>${ml(isMl?d.ml_symptoms:d.main_symptoms)}</div>
+      <div class="info-block"><div class="info-block-label">${isMl?'ഫീൽഡ് തിരിച്ചറിയൽ':'Field Identification Tips'}</div>${ml(d.field_tips)}</div>
+    </div>
+    <div class="tab-panel" id="tp-mgmt">
+      <div class="info-block"><div class="info-block-label">${isMl?'പ്രതിരോധ നടപടികൾ':'Prevention'}</div>${ml(d.prevention)}</div>
+      <div class="info-block"><div class="info-block-label">${isMl?'സാംസ്കാരിക പ്രബന്ധനം':'Cultural Management'}</div>${ml(d.cultural)}</div>
+      <div class="info-block"><div class="info-block-label">${isMl?'ജൈവ ചികിൽസ':'Biological Management'}</div>${ml(d.biological)}</div>
+      <div class="info-block"><div class="info-block-label">${isMl?'രാസ ചികിൽസ (പൊതു)':'Chemical Management (General)'}</div>${ml(d.chemical)}</div>
+      <div class="alert-box"><div class="alert-box-label">⚠️ ${isMl?'വിദഗ്ധനെ ബന്ധപ്പെടേണ്ട സന്ദർഭം':'When to Contact an Expert'}</div>${ml(d.expert_when)}</div>
+    </div>
+    <div class="tab-panel" id="tp-faq">
+      ${d.faq.map((f,i)=>`<div class="faq-item" id="faq-${idx}-${i}"><button class="faq-q" onclick="toggleFaq('faq-${idx}-${i}')"><span>${f.q}</span><span class="faq-toggle">+</span></button><div class="faq-a">${f.a}</div></div>`).join('')}
+    </div>
+    <div class="tab-panel" id="tp-adv">
+      <div class="wa-reply-box">
+        <div class="wa-reply-icon">💬</div>
+        <div>
+          <div class="wa-reply-label">${isMl?'WhatsApp ഓട്ടോ-റിപ്ലൈ':'WhatsApp Auto-Reply Template'}</div>
+          <div class="wa-reply-text">${d.whatsapp_short}</div>
+        </div>
+      </div>
+      <div class="info-block"><div class="info-block-label">SEO Keywords</div><div class="keywords-wrap">${d.seo_keywords.map(k=>`<span class="kw-tag">${k}</span>`).join('')}</div></div>
+      <a href="https://wa.me/919400000000?text=${encodeURIComponent('I need expert advice on '+d.disease_name+' in my farm. Please help.')}" target="_blank" class="modal-wa-btn">
+        💬 ${isMl?'WhatsApp ൽ വിദഗ്ദ്ധനോട് ചോദിക്കൂ':'Discuss This Disease With Our Expert'}
+      </a>
+    </div>`;
+  ov.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function switchTab(btn,id){
+  document.querySelectorAll('.modal-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tp-'+id).classList.add('active');
+}
+
+function toggleFaq(id){document.getElementById(id).classList.toggle('open')}
+
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+
+/* ─── CONTACT FORM ─── */
+function submitForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  if(!name||!phone){alert('Please fill in your name and phone number.');return;}
+  const district=document.getElementById('f-district').value;
+  const service=document.getElementById('f-service').value;
+  const msg=document.getElementById('f-message').value;
+  const waText=`Hello AgriPath Kerala!\n\nName: ${name}\nPhone: ${phone}\nDistrict: ${district||'—'}\nService: ${service||'—'}\n\nMessage: ${msg||'—'}`;
+  window.open('https://wa.me/919400000000?text='+encodeURIComponent(waText),'_blank');
+  document.getElementById('formSuccess').classList.add('show');
+}
+
+/* ─── LANG RERENDER ─── */
+const origSetLang=setLang;
+window.setLang=function(lang){
+  origSetLang(lang);
+  const f=document.querySelector('.filter-chip.active')?.dataset.f||'all';
+  filterCards(f,document.getElementById('diseaseSearch').value.toLowerCase());
+  buildChecker();
+};
+
+/* ─── QUICK DISEASE ITEMS NAV ─── */
+document.querySelectorAll('.quick-disease-item[onclick]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.getElementById('diseases').scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
